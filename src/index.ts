@@ -83,6 +83,13 @@ export {
   type HistoryOptions,
 } from './history';
 
+// Utilities
+export {
+  debouncedSignal,
+  throttledSignal,
+  conditionalSignal,
+} from './utils';
+
 // Dependency tracking
 export { getCurrentContext, setCurrentContext } from './context';
 
