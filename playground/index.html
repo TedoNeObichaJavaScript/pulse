@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pulse Playground</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      overflow: hidden;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+      color: white;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .header h1 {
+      font-size: 2.5em;
+      margin-bottom: 10px;
+    }
+
+    .header p {
+      opacity: 0.9;
+    }
+
+    .playground {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      padding: 30px;
+    }
+
+    .panel {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 20px;
+    }
+
+    .panel h2 {
+      margin-bottom: 15px;
+      color: #333;
+    }
+
+    .code-editor {
+      background: #1e1e1e;
+      color: #d4d4d4;
+      border-radius: 6px;
+      padding: 15px;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      min-height: 300px;
+      overflow-x: auto;
+    }
+
+    .output {
+      background: #1e1e1e;
+      color: #4ec9b0;
+      border-radius: 6px;
+      padding: 15px;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      min-height: 300px;
+      overflow-y: auto;
+    }
+
+    .button {
+      background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 600;
+      transition: transform 0.2s;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+    }
+
+    .examples {
+      grid-column: 1 / -1;
+    }
+
+    .example-btn {
+      background: #e9ecef;
+      border: 2px solid #dee2e6;
+      padding: 10px 20px;
+      margin: 5px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .example-btn:hover {
+      background: #dee2e6;
+      border-color: #8b5cf6;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>⚡ Pulse Playground</h1>
+      <p>Interactive reactive state engine playground</p>
+    </div>
+    
+    <div class="playground">
+      <div class="panel">
+        <h2>Code Editor</h2>
+        <textarea id="editor" class="code-editor" spellcheck="false">import { signal, computed, effect } from 'pulse';
+
+// Create a signal
+const count = signal(0);
+
+// Create a computed value
+const doubled = computed(() => count() * 2);
+
+// Create an effect
+effect(() => {
+  console.log(`Count: ${count()}, Doubled: ${doubled()}`);
+});
+
+// Update the signal
+count.set(5);
+count.set(10);</textarea>
+        <button class="button" onclick="runCode()" style="margin-top: 15px; width: 100%;">
+          ▶ Run Code
+        </button>
+      </div>
+
+      <div class="panel">
+        <h2>Output</h2>
+        <div id="output" class="output">// Output will appear here...</div>
+      </div>
+
+      <div class="panel examples">
+        <h2>Examples</h2>
+        <button class="example-btn" onclick="loadExample('basic')">Basic Signals</button>
+        <button class="example-btn" onclick="loadExample('computed')">Computed Values</button>
+        <button class="example-btn" onclick="loadExample('effects')">Effects</button>
+        <button class="example-btn" onclick="loadExample('stores')">Stores</button>
+        <button class="example-btn" onclick="loadExample('batch')">Batch Updates</button>
+        <button class="example-btn" onclick="loadExample('async')">Async Computed</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    // This would load Pulse and run the code
+    // For now, it's a placeholder structure
+    
+    window.runCode = function() {
+      const code = document.getElementById('editor').value;
+      const output = document.getElementById('output');
+      
+      // Capture console.log
+      const logs = [];
+      const originalLog = console.log;
+      console.log = (...args) => {
+        logs.push(args.map(a => typeof a === 'object' ? JSON.stringify(a) : String(a)).join(' '));
+        originalLog(...args);
+      };
+      
+      try {
+        // In a real implementation, this would use a code runner
+        output.textContent = 'Running code...\n\n' + logs.join('\n');
+      } catch (error) {
+        output.textContent = 'Error: ' + error.message;
+      } finally {
+        console.log = originalLog;
+      }
+    };
+
+    window.loadExample = function(name) {
+      const examples = {
+        basic: `const count = signal(0);
+count.set(5);
+console.log(count());`,
+        computed: `const a = signal(1);
+const b = signal(2);
+const sum = computed(() => a() + b());
+console.log(sum());`,
+        effects: `const name = signal('World');
+effect(() => {
+  console.log('Hello, ' + name() + '!');
+});
+name.set('Pulse');`,
+        stores: `const user = store({ name: 'John', age: 30 });
+user.setField('age', 31);
+console.log(user());`,
+        batch: `const a = signal(0);
+const b = signal(0);
+batch(() => {
+  a.set(1);
+  b.set(1);
+});`,
+        async: `const userId = signal(1);
+const user = asyncComputed(async () => {
+  const id = userId();
+  const response = await fetch('/api/user/' + id);
+  return response.json();
+});`
+      };
+      
+      document.getElementById('editor').value = examples[name] || '';
+    };
+  </script>
+</body>
+</html>
+

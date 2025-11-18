@@ -603,6 +603,16 @@ export {
   type SignalSnapshot,
 } from './debugging-tools';
 
+// Benchmarks
+export {
+  benchmarkSignal,
+  benchmarkSuite,
+  compareBenchmarks,
+  runBenchmarkSuite,
+  formatBenchmarkResults,
+  type BenchmarkResult,
+} from './benchmarks';
+
 // Dependency tracking
 export { getCurrentContext, setCurrentContext } from './context';
 
