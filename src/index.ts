@@ -115,6 +115,29 @@ export {
   type SignalGroup,
 } from './groups';
 
+// Lenses
+export {
+  lensSignal,
+  propLens,
+  indexLens,
+  composeLens,
+  pathLens,
+  type Lens,
+} from './lenses';
+
+// Conditional Subscriptions
+export {
+  conditionalSubscribe,
+  conditionalEffect,
+} from './conditional';
+
+// Caching
+export {
+  cachedComputed,
+  invalidateCache,
+  type CacheOptions,
+} from './caching';
+
 // Dependency tracking
 export { getCurrentContext, setCurrentContext } from './context';
 
