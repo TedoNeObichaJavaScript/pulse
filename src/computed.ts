@@ -1,5 +1,6 @@
 import { getCurrentContext, setCurrentContext, withContext } from './context';
 import type { Signal } from './signal';
+import { withErrorHandling } from './error-handling';
 
 /**
  * A computed value that automatically updates when dependencies change
@@ -56,10 +57,15 @@ export function computed<T>(fn: () => T): Computed<T> {
       },
     };
 
-    // Compute the value while tracking dependencies
-    state.value = withContext(context, () => {
-      return fn();
-    });
+    // Compute the value while tracking dependencies, with error handling
+    const computedValue = withErrorHandling(
+      () => withContext(context, fn),
+      'computed'
+    );
+    if (computedValue === undefined) {
+      throw new Error('Computed function returned undefined or threw an error');
+    }
+    state.value = computedValue;
 
     // Subscribe to all dependencies
     const unsubscribers: (() => void)[] = [];

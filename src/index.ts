@@ -19,6 +19,16 @@ export { array, type SignalArray } from './array';
 // Async computed
 export { asyncComputed, type AsyncComputed } from './async-computed';
 
+// Error handling
+export {
+  setErrorHandler,
+  getErrorHandler,
+  handleError,
+  errorBoundary,
+  errorBoundaryAsync,
+  PulseError,
+} from './error-handling';
+
 // Dependency tracking
 export { getCurrentContext, setCurrentContext } from './context';
 

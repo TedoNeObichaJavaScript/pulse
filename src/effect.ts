@@ -1,4 +1,5 @@
 import { withContext } from './context';
+import { withErrorHandling } from './error-handling';
 
 /**
  * Creates an effect that runs when its dependencies change
@@ -35,9 +36,12 @@ export function effect(fn: () => void | (() => void)): () => void {
       },
     };
 
-    // Run the effect while tracking dependencies
-    const result = withContext(context, fn);
-    cleanup = typeof result === 'function' ? result : undefined;
+    // Run the effect while tracking dependencies, with error handling
+    const result = withErrorHandling(
+      () => withContext(context, fn),
+      'effect'
+    );
+    cleanup = result && typeof result === 'function' ? result : undefined;
 
     // Subscribe to all dependencies
     const unsubscribers: (() => void)[] = [];
