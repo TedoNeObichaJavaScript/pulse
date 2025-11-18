@@ -475,6 +475,31 @@ export {
   signalWith,
 } from './middleware-chain';
 
+// React Integration
+export {
+  useSignal,
+  useComputed,
+  usePulseEffect,
+  useSignalState,
+} from './integrations/react';
+
+// Vue Integration
+export {
+  useSignal as useVueSignal,
+  createSignal,
+  useComputed as useVueComputed,
+} from './integrations/vue';
+
+// SSR Support
+export {
+  isSSR,
+  ssrSignal,
+  hydrateSignal,
+  getSignalState,
+  serializeForSSR,
+  deserializeFromSSR,
+} from './integrations/ssr';
+
 // Dependency tracking
 export { getCurrentContext, setCurrentContext } from './context';
 
