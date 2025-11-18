@@ -10,6 +10,9 @@ export { batch } from './batch';
 // Readonly views
 export { readonly, readonlyComputed, type ReadonlySignal, type ReadonlyComputed } from './readonly';
 
+// Derived stores
+export { derived, derivedFrom, type DerivedStore } from './derived';
+
 // Dependency tracking
 export { getCurrentContext, setCurrentContext } from './context';
 
