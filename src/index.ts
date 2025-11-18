@@ -525,6 +525,34 @@ export {
   type DevToolsOptions,
 } from './devtools';
 
+// Core Optimizations
+export {
+  optimizedNotify,
+  scheduleRAFUpdate,
+  scheduleMicrotaskUpdate,
+  fastEquals,
+} from './optimizations-core';
+
+// Performance Hooks
+export {
+  addPerformanceHook,
+  withPerformanceMonitoring,
+  type PerformanceHook,
+} from './performance-hooks';
+
+// Bundle Optimization
+export {
+  minimalSignal,
+  hasFeatures,
+} from './bundle-optimization';
+
+// Tree Shaking
+export {
+  FEATURES,
+  ifFeature,
+  lazyFeature,
+} from './tree-shaking';
+
 // Dependency tracking
 export { getCurrentContext, setCurrentContext } from './context';
 

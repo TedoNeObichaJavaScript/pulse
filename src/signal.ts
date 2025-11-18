@@ -87,23 +87,26 @@ export function signal<T>(initialValue: T, options?: SignalOptions<T>): Signal<T
       processedValue = next(value);
     }
     
-    // Check equality using custom function or default strict equality
+    // Check equality using custom function or optimized fast path
     const isEqual = state.equals 
       ? state.equals(state.value, processedValue)
-      : state.value === processedValue;
+      : (state.value === processedValue || 
+         (typeof processedValue !== 'object' && state.value === processedValue));
     
     if (!isEqual) {
       state.value = processedValue;
       
-      // Notify all subscribers with error handling
+      // Notify all subscribers with error handling (optimized)
       const notify = () => {
-        state.subscribers.forEach((callback) => {
+        // Use array iteration for better performance
+        const subs = Array.from(state.subscribers);
+        for (let i = 0; i < subs.length; i++) {
           try {
-            callback(processedValue);
+            subs[i](processedValue);
           } catch (error) {
             console.error('Error in signal subscriber:', error);
           }
-        });
+        }
       };
       
       // If batching, schedule the update; otherwise notify immediately

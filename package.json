@@ -10,8 +10,13 @@
     ".": {
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
+    },
+    "./minimal": {
+      "import": "./dist/bundle-optimization.js",
+      "types": "./dist/bundle-optimization.d.ts"
     }
   },
+  "sideEffects": false,
   "scripts": {
     "dev": "vite build --watch",
     "build": "tsc && vite build",
