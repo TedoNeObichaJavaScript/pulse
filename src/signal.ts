@@ -1,4 +1,5 @@
 import { getCurrentContext, setCurrentContext, withContext } from './context';
+import { scheduleUpdate, isBatchingUpdates } from './batch';
 
 /**
  * A reactive signal - the core primitive of the reactive system
@@ -51,8 +52,18 @@ export function signal<T>(initialValue: T): Signal<T> {
   const set = (value: T): void => {
     if (state.value !== value) {
       state.value = value;
+      
       // Notify all subscribers
-      state.subscribers.forEach((callback) => callback(value));
+      const notify = () => {
+        state.subscribers.forEach((callback) => callback(value));
+      };
+      
+      // If batching, schedule the update; otherwise notify immediately
+      if (isBatchingUpdates()) {
+        scheduleUpdate(notify);
+      } else {
+        notify();
+      }
     }
   };
 
