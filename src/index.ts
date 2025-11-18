@@ -500,6 +500,12 @@ export {
   deserializeFromSSR,
 } from './integrations/ssr';
 
+// Proxies
+export {
+  proxySignal,
+  signalFromProxy,
+} from './proxies';
+
 // Dependency tracking
 export { getCurrentContext, setCurrentContext } from './context';
 
