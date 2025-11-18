@@ -1,4 +1,11 @@
-# Pulse ⚡
+<div align="center">
+  <img src="logo.svg" alt="Pulse Logo" width="120" height="120">
+  <h1>Pulse ⚡</h1>
+  <p><strong>A lightweight reactive state engine</strong></p>
+  <p>Automatically tracks dependencies between variables and UI components</p>
+</div>
+
+---
 
 A lightweight reactive state engine that automatically tracks dependencies between variables and UI components, re-running functions when their dependencies change. Think of it as a mini-Svelte core - a powerful reactivity system with signals, stores, computed values, and a template compiler.
 
