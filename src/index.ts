@@ -75,6 +75,14 @@ export {
   type ValidatedSignalOptions,
 } from './validation';
 
+// History & Undo/Redo
+export {
+  historySignal,
+  type HistorySignal,
+  type HistoryState,
+  type HistoryOptions,
+} from './history';
+
 // Dependency tracking
 export { getCurrentContext, setCurrentContext } from './context';
 
