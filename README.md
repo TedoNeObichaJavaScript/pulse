@@ -25,16 +25,16 @@ When you create a **signal** (a reactive variable), any **computed values** or *
 - 📦 **Lightweight** - Minimal overhead, maximum performance
 - 🔧 **TypeScript First** - Full type safety out of the box
 
-## Features
+## ✨ Features
 
-### Core Reactivity
+### 🎯 Core Reactivity
 - 🔄 **Signals** - Reactive variables that trigger updates when changed
 - 🧮 **Computed Values** - Derived state that automatically recalculates when dependencies change
 - 📦 **Stores** - Reactive objects with convenient partial update methods
 - 🎯 **Effects** - Side effects that automatically re-run when dependencies change
 - 🎯 **Automatic Dependency Tracking** - No manual dependency management needed
 
-### Advanced Features
+### 🚀 Advanced Features
 - ⚡ **Batch Updates** - Group multiple updates together for better performance
 - 🔒 **Readonly Views** - Create read-only versions of signals for encapsulation
 - ⚖️ **Custom Equality** - Prevent unnecessary updates with custom comparison functions
@@ -86,8 +86,13 @@ When you create a **signal** (a reactive variable), any **computed values** or *
 - 🚦 **Rate Limiter** - Rate limiting for signal updates
 - 💨 **Backpressure** - Backpressure handling for high-frequency updates
 - 📦 **Advanced Batching** - Priority, conditional, and scheduled batching
+- 🛠️ **Utilities** - Clone, merge, diff, and sync signal operations
+- 💾 **Serialization** - Serialize/deserialize signal state for persistence
+- 🔌 **Plugins** - Extensible plugin system for custom functionality
+- 🔗 **Framework Integrations** - React hooks, Vue composables, SSR support
+- ⛓️ **Middleware Chain** - Fluent API for building middleware pipelines
 
-## Installation
+## 📦 Installation
 
 ```bash
 npm install pulse
@@ -97,9 +102,16 @@ pnpm add pulse
 yarn add pulse
 ```
 
-## How It Works
+## 🔍 How It Works
 
 Pulse uses a **dependency graph** to track relationships between your reactive values. When you read a signal inside a computed value or effect, Pulse automatically records that dependency. When the signal changes, Pulse knows exactly which computations need to update.
+
+The framework is designed with **performance** and **developer experience** in mind, featuring:
+- Automatic dependency tracking
+- Fine-grained reactivity (only updates what changed)
+- Error handling and recovery
+- Memory leak detection
+- Performance optimizations
 
 ```typescript
 const count = signal(0);           // Create a signal
@@ -111,7 +123,7 @@ const doubled = computed(() => {    // Create a computed value
 count.set(5);  // doubled() is now 10, automatically!
 ```
 
-## Usage
+## 📖 Usage
 
 ### Basic Signals
 
@@ -218,7 +230,54 @@ const html = template.render({
 });
 ```
 
-## Use Cases
+### React Integration
+
+```typescript
+import { useSignal, useComputed } from 'pulse/integrations/react';
+
+function Counter() {
+  const [count, setCount] = useSignal(signal(0));
+  const doubled = useComputed(computed(() => count * 2));
+  
+  return <button onClick={() => setCount(count + 1)}>{doubled}</button>;
+}
+```
+
+### Vue Integration
+
+```typescript
+import { useSignal } from 'pulse/integrations/vue';
+
+export default {
+  setup() {
+    const count = useSignal(signal(0));
+    return { count };
+  }
+}
+```
+
+### Utilities & Helpers
+
+```typescript
+import { 
+  cloneSignal, 
+  mergeSignals, 
+  signalDiff,
+  promiseSignal,
+  serializableSignal 
+} from 'pulse';
+
+// Clone a signal
+const cloned = cloneSignal(originalSignal);
+
+// Merge multiple signals
+const merged = mergeSignals(signal1, signal2, signal3);
+
+// Create from promise
+const data = promiseSignal(fetch('/api/data').then(r => r.json()));
+```
+
+## 🎯 Use Cases
 
 - **State Management** - Manage application state with automatic reactivity
 - **UI Frameworks** - Build reactive UI frameworks or enhance existing ones
@@ -226,8 +285,9 @@ const html = template.render({
 - **Form Validation** - Reactive form state with automatic validation
 - **Real-time Updates** - Keep data synchronized across your application
 - **Template Rendering** - Use the template compiler for server-side or client-side rendering
+- **Cross-Framework** - Use with React, Vue, or any JavaScript framework
 
-## Why Pulse?
+## 💡 Why Pulse?
 
 Unlike traditional state management libraries that require you to manually trigger updates, Pulse automatically tracks dependencies and updates only what's necessary. This means:
 
@@ -235,8 +295,10 @@ Unlike traditional state management libraries that require you to manually trigg
 - **Better Performance** - Only updates what actually changed
 - **Easier Debugging** - Clear dependency relationships
 - **Type Safe** - Full TypeScript support with excellent autocomplete
+- **Framework Agnostic** - Works with any JavaScript/TypeScript project
+- **Production Ready** - 50+ features, comprehensive error handling, and optimizations
 
-## Development
+## 🛠️ Development
 
 ```bash
 # Install dependencies
@@ -260,12 +322,24 @@ npm run dev
 pnpm dev
 ```
 
-## Contributing
+## 📚 Documentation
+
+- [Features List](FEATURES.md) - Comprehensive list of all features
+- [Improvements](IMPROVEMENTS.md) - Performance optimizations and bug fixes
+
+## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
-## License
+## 📄 License
 
 MIT License - see [LICENSE](LICENSE) file for details
+
+---
+
+<div align="center">
+  <p>Made with ❤️ by <a href="https://github.com/TedoNeObichaJavaScript">TedoNeObichaJavaScript</a></p>
+  <p>⭐ Star this repo if you find it useful!</p>
+</div>
 
 
