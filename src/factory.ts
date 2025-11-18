@@ -147,9 +147,9 @@ export function formSignal<T extends Record<string, any>>(
 
   return {
     fields,
-    values,
+    values: values as Signal<T>,
     reset,
-    isValid,
+    isValid: isValid as Signal<boolean>,
   };
 }
 

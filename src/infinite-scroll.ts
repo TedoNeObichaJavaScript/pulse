@@ -4,7 +4,7 @@
  */
 
 import { signal, type Signal } from './signal';
-import { computed } from './computed';
+import { computed, type Computed } from './computed';
 import { resource, type Resource } from './resources';
 
 export interface InfiniteScrollOptions<T> {

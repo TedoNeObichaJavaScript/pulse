@@ -174,6 +174,7 @@ export function optionalContract<T>(
 export interface ValidatedSignalOptions<T> {
   contract: Contract<T>;
   onValidationError?: (value: T, error: string) => void;
+  onError?: (value: T, error: string) => void; // Alias for onValidationError
   throwOnError?: boolean;
 }
 
@@ -184,33 +185,40 @@ export function validatedSignal<T>(
   initialValue: T,
   options: ValidatedSignalOptions<T>
 ): Signal<T> {
-  const { contract, onValidationError, throwOnError = false } = options;
+  const { contract, onValidationError, onError, throwOnError = false } = options;
+  // Support both onValidationError and onError (onError is an alias)
+  const errorHandler = onValidationError || onError;
 
   // Validate initial value
   const initialResult = contract.validate(initialValue);
-  if (initialResult !== true) {
-    const errorMsg = typeof initialResult === 'string' ? initialResult : 'Validation failed';
-    if (throwOnError) {
-      throw new Error(`Initial value validation failed: ${errorMsg}`);
+    if (initialResult !== true) {
+      const errorMsg = typeof initialResult === 'string' ? initialResult : 'Validation failed';
+      if (throwOnError) {
+        throw new Error(`Initial value validation failed: ${errorMsg}`);
+      }
+      if (errorHandler) {
+        errorHandler(initialValue, errorMsg);
+      }
     }
-    if (onValidationError) {
-      onValidationError(initialValue, errorMsg);
-    }
-  }
 
-  const sig = signal(initialValue, {
+  const sig: Signal<T> = signal(initialValue, {
     middleware: [
-      (value, next) => {
+      (value: T, next: (value: T) => T, signal: Signal<T>) => {
         const result = contract.validate(value);
         if (result !== true) {
           const errorMsg = typeof result === 'string' ? result : 'Validation failed';
           if (throwOnError) {
             throw new Error(`Validation failed: ${errorMsg}`);
           }
-          if (onValidationError) {
-            onValidationError(value, errorMsg);
+          // Call error handler synchronously before returning current value
+          if (errorHandler) {
+            try {
+              errorHandler(value, errorMsg);
+            } catch (e) {
+              // Ignore errors in error handler
+            }
           }
-          return sig(); // Return current value if validation fails
+          return signal(); // Return current signal value if validation fails
         }
         return next(value);
       },

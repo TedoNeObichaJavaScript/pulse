@@ -98,7 +98,7 @@ export function cachedComputed<T>(
     const value = fn();
     setCached(value);
     return value;
-  });
+  }) as Signal<T>;
 }
 
 /**

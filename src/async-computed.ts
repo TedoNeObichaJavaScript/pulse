@@ -28,7 +28,7 @@ type AsyncComputedState<T> = {
  * Automatically handles loading states and errors
  */
 export function asyncComputed<T>(fn: () => Promise<T>): AsyncComputed<T> {
-  const loadingSignal = signal(false);
+  const loadingSignal = signal(true); // Start with loading = true
   const errorSignal = signal<Error | null>(null);
 
   const state: AsyncComputedState<T> = {
@@ -36,7 +36,7 @@ export function asyncComputed<T>(fn: () => Promise<T>): AsyncComputed<T> {
     value: undefined,
     promise: null,
     subscribers: new Set(),
-    loading: false,
+    loading: true, // Start with loading = true
     error: null,
     dependencies: new Set(),
     isDirty: true,

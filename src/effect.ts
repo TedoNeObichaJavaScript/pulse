@@ -1,5 +1,15 @@
 import { withContext } from './context';
 import { withErrorHandling } from './error-handling';
+import { isBatchingUpdates, scheduleUpdate } from './batch';
+
+// Track scheduled effect runs to deduplicate them during batches
+const scheduledEffects = new Set<() => void>();
+
+function flushScheduledEffects(): void {
+  const effects = Array.from(scheduledEffects);
+  scheduledEffects.clear();
+  effects.forEach((run) => run());
+}
 
 /**
  * Creates an effect that runs when its dependencies change
@@ -45,11 +55,25 @@ export function effect(fn: () => void | (() => void)): () => void {
 
     // Subscribe to all dependencies
     const unsubscribers: (() => void)[] = [];
+    
     dependencies.forEach((dep) => {
       unsubscribers.push(
         dep.subscribe(() => {
           if (isActive) {
-            run();
+            // Schedule effect run to batch it with other updates
+            if (isBatchingUpdates()) {
+              if (!scheduledEffects.has(run)) {
+                scheduledEffects.add(run);
+                scheduleUpdate(() => {
+                  scheduledEffects.delete(run);
+                  if (isActive) {
+                    run();
+                  }
+                });
+              }
+            } else {
+              run();
+            }
           }
         })
       );

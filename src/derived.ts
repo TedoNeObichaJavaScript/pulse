@@ -31,7 +31,7 @@ export function derivedFrom<T extends Record<string, any>>(
     return computed(() => {
       const values: Record<string, any> = {};
       for (const [key, source] of Object.entries(sources)) {
-        values[key] = typeof source === 'function' ? source() : source();
+        values[key] = typeof source === 'function' ? (source as () => any)() : (source as any)();
       }
       return fn(values);
     }) as DerivedStore<T>;
@@ -40,7 +40,7 @@ export function derivedFrom<T extends Record<string, any>>(
     return computed(() => {
       const result = {} as T;
       for (const [key, source] of Object.entries(sources)) {
-        result[key as keyof T] = (typeof source === 'function' ? source() : source()) as any;
+        result[key as keyof T] = (typeof source === 'function' ? (source as () => any)() : (source as any)()) as any;
       }
       return result;
     }) as DerivedStore<T>;

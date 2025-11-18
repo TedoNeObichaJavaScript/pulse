@@ -3,12 +3,18 @@
  * Optimize memory usage and prevent leaks
  */
 
+// WeakRef type declaration for TypeScript
+declare const WeakRef: {
+  new <T extends object>(target: T): { deref: () => T | undefined };
+  prototype: { deref: () => any };
+} | undefined;
+
 import type { Signal } from './signal';
 
 /**
  * Weak reference wrapper for signals
  */
-export function weakSignal<T>(sig: Signal<T>): WeakRef<Signal<T>> | { deref: () => Signal<T> } {
+export function weakSignal<T>(sig: Signal<T>): { deref: () => Signal<T> | undefined } | { deref: () => Signal<T> } {
   if (typeof WeakRef !== 'undefined') {
     return new (WeakRef as any)(sig);
   }

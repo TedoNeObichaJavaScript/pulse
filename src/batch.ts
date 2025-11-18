@@ -14,18 +14,22 @@ function flushUpdates(): void {
     return;
   }
 
-  // Copy queue and clear it to prevent re-entrancy
-  const updates = updateQueue.slice();
-  updateQueue.length = 0;
-  scheduledFlush = false;
+  // Execute updates in a loop until the queue is empty
+  // This handles cases where updates add more updates to the queue
+  while (updateQueue.length > 0) {
+    // Copy queue and clear it to prevent re-entrancy
+    const updates = updateQueue.slice();
+    updateQueue.length = 0;
+    scheduledFlush = false;
 
-  // Execute all updates with error handling
-  for (const update of updates) {
-    try {
-      update();
-    } catch (error) {
-      console.error('Error in batched update:', error);
-      // Continue with other updates
+    // Execute all updates with error handling
+    for (const update of updates) {
+      try {
+        update();
+      } catch (error) {
+        console.error('Error in batched update:', error);
+        // Continue with other updates
+      }
     }
   }
 }
@@ -47,6 +51,12 @@ export function batch<T>(fn: () => T): T {
     }
     
     return result;
+  } catch (error) {
+    // If error occurred, still flush updates before re-throwing
+    if (!wasBatching) {
+      flushUpdates();
+    }
+    throw error;
   } finally {
     isBatching = wasBatching;
   }

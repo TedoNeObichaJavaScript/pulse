@@ -101,9 +101,9 @@ function tokenize(template: string): Token[] {
     } else if (content.startsWith('#each ')) {
       const parts = content.slice(6).trim().split(' as ');
       const items = parts[0].trim();
-      const itemParts = parts[1]?.trim().split(' ') || [];
+      const itemParts = parts[1]?.trim().split(' ').filter(p => p) || [];
       const item = itemParts[0] || 'item';
-      const index = itemParts[2] || undefined;
+      const index = itemParts[1] || undefined;
       tokens.push({ type: 'each', items, item, index });
     } else if (content === '/each') {
       tokens.push({ type: 'eachEnd' });
@@ -149,66 +149,63 @@ function parse(tokens: Token[]): ASTNode[] {
         const children: ASTNode[] = [];
         i++; // Skip if token
         let depth = 1;
+        const childTokens: Token[] = [];
         while (i < tokens.length && depth > 0) {
-          if (tokens[i].type === 'if') depth++;
-          if (tokens[i].type === 'ifEnd') depth--;
+          const currentToken = tokens[i];
+          if (currentToken.type === 'if') depth++;
+          else if (currentToken.type === 'ifEnd') depth--;
+          
           if (depth > 0) {
-            const childTokens: Token[] = [];
-            while (i < tokens.length && !(tokens[i].type === 'ifEnd' && depth === 1)) {
-              if (tokens[i].type === 'if') depth++;
-              if (tokens[i].type === 'ifEnd') depth--;
-              childTokens.push(tokens[i]);
-              i++;
-            }
-            children.push(...parse(childTokens));
+            childTokens.push(currentToken);
           }
+          i++;
+        }
+        if (childTokens.length > 0) {
+          children.push(...parse(childTokens));
         }
         nodes.push({ type: 'if', condition: token.condition, children });
-        if (i < tokens.length && tokens[i].type === 'ifEnd') i++;
         break;
       }
       case 'each': {
         const children: ASTNode[] = [];
         i++; // Skip each token
         let depth = 1;
+        const childTokens: Token[] = [];
         while (i < tokens.length && depth > 0) {
-          if (tokens[i].type === 'each') depth++;
-          if (tokens[i].type === 'eachEnd') depth--;
+          const currentToken = tokens[i];
+          if (currentToken.type === 'each') depth++;
+          else if (currentToken.type === 'eachEnd') depth--;
+          
           if (depth > 0) {
-            const childTokens: Token[] = [];
-            while (i < tokens.length && !(tokens[i].type === 'eachEnd' && depth === 1)) {
-              if (tokens[i].type === 'each') depth++;
-              if (tokens[i].type === 'eachEnd') depth--;
-              childTokens.push(tokens[i]);
-              i++;
-            }
-            children.push(...parse(childTokens));
+            childTokens.push(currentToken);
           }
+          i++;
+        }
+        if (childTokens.length > 0) {
+          children.push(...parse(childTokens));
         }
         nodes.push({ type: 'each', items: token.items, item: token.item, index: token.index, children });
-        if (i < tokens.length && tokens[i].type === 'eachEnd') i++;
         break;
       }
       case 'with': {
         const children: ASTNode[] = [];
         i++; // Skip with token
         let depth = 1;
+        const childTokens: Token[] = [];
         while (i < tokens.length && depth > 0) {
-          if (tokens[i].type === 'with') depth++;
-          if (tokens[i].type === 'withEnd') depth--;
+          const currentToken = tokens[i];
+          if (currentToken.type === 'with') depth++;
+          else if (currentToken.type === 'withEnd') depth--;
+          
           if (depth > 0) {
-            const childTokens: Token[] = [];
-            while (i < tokens.length && !(tokens[i].type === 'withEnd' && depth === 1)) {
-              if (tokens[i].type === 'with') depth++;
-              if (tokens[i].type === 'withEnd') depth--;
-              childTokens.push(tokens[i]);
-              i++;
-            }
-            children.push(...parse(childTokens));
+            childTokens.push(currentToken);
           }
+          i++;
+        }
+        if (childTokens.length > 0) {
+          children.push(...parse(childTokens));
         }
         nodes.push({ type: 'with', object: token.object, children });
-        if (i < tokens.length && tokens[i].type === 'withEnd') i++;
         break;
       }
       default:
@@ -221,33 +218,48 @@ function parse(tokens: Token[]): ASTNode[] {
 
 function generate(nodes: ASTNode[], reactivePrefix: string): string {
   const parts: string[] = ['let result = "";'];
+  let contextStack: string[] = ['context'];
   
-  function generateNode(node: ASTNode, indent = ''): void {
+  function generateNode(node: ASTNode, indent = '', localContext?: string, localVars?: Record<string, string>): void {
+    const ctx = localContext || contextStack[contextStack.length - 1];
+    const locals = localVars || {};
     switch (node.type) {
       case 'text':
         parts.push(`result += ${JSON.stringify(node.value)};`);
         break;
       case 'variable':
-        parts.push(`result += String(context.${node.name} ?? "");`);
+        // Check if variable is a local (loop item/index) first
+        if (locals[node.name]) {
+          parts.push(`result += String(${locals[node.name]});`);
+        } else {
+          parts.push(`result += String(${ctx}.${node.name} ?? "");`);
+        }
         break;
       case 'if':
-        parts.push(`if (context.${node.condition}) {`);
-        node.children.forEach((child) => generateNode(child, indent + '  '));
+        parts.push(`if (${ctx}.${node.condition}) {`);
+        node.children.forEach((child) => generateNode(child, indent + '  ', localContext, locals));
         parts.push(`}`);
         break;
-      case 'each':
-        parts.push(`const ${node.items}_arr = context.${node.items} || [];`);
-        parts.push(`for (let ${node.index || 'i'} = 0; ${node.index || 'i'} < ${node.items}_arr.length; ${node.index || 'i'}++) {`);
-        parts.push(`  const ${node.item} = ${node.items}_arr[${node.index || 'i'}];`);
-        node.children.forEach((child) => generateNode(child, indent + '  '));
+      case 'each': {
+        const indexVar = node.index || 'i';
+        const itemsVar = `${node.items}_arr`;
+        parts.push(`const ${itemsVar} = context.${node.items} || [];`);
+        parts.push(`for (let ${indexVar} = 0; ${indexVar} < ${itemsVar}.length; ${indexVar}++) {`);
+        parts.push(`  const ${node.item} = ${itemsVar}[${indexVar}];`);
+        // Create local variables map for loop item and index
+        const loopLocals = { ...locals, [node.item]: node.item, [indexVar]: indexVar };
+        node.children.forEach((child) => generateNode(child, indent + '  ', localContext, loopLocals));
         parts.push(`}`);
         break;
-      case 'with':
-        parts.push(`const ${node.object}_obj = context.${node.object} || {};`);
-        parts.push(`with (${node.object}_obj) {`);
-        node.children.forEach((child) => generateNode(child, indent + '  '));
-        parts.push(`}`);
+      }
+      case 'with': {
+        const objVar = `${node.object}_obj`;
+        parts.push(`const ${objVar} = ${ctx}.${node.object} || {};`);
+        contextStack.push(objVar);
+        node.children.forEach((child) => generateNode(child, indent + '  ', objVar, locals));
+        contextStack.pop();
         break;
+      }
     }
   }
   

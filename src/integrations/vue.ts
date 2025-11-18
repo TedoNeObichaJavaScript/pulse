@@ -3,15 +3,31 @@
  * Vue 3 composables for Pulse signals
  */
 
-// @ts-ignore - Vue is an optional dependency
-import type { Ref, UnwrapRef } from 'vue';
 import type { Signal } from '../signal';
+
+// Vue is an optional dependency - use dynamic require
+let Vue: any;
+function getVue() {
+  if (!Vue) {
+    try {
+      Vue = require('vue');
+    } catch (e) {
+      throw new Error('Vue is not installed. Please install vue to use Vue integrations.');
+    }
+  }
+  return Vue;
+}
+
+// Type definitions for Vue types (for TypeScript)
+type Ref<T> = any;
+type UnwrapRef<T> = T;
 
 /**
  * Vue composable for using a signal
  */
 export function useSignal<T>(sig: Signal<T>): Ref<UnwrapRef<T>> {
-  const { ref, watchEffect, onUnmounted } = require('vue');
+  const vue = getVue();
+  const { ref, watchEffect, onUnmounted } = vue;
   const value = ref(sig()) as Ref<UnwrapRef<T>>;
 
   const unsubscribe = sig.subscribe((newValue: T) => {
@@ -33,11 +49,12 @@ export function createSignal<T>(initialValue: T): {
   ref: Ref<UnwrapRef<T>>;
 } {
   const { signal } = require('../signal');
-  const { ref } = require('vue');
+  const vue = getVue();
+  const { ref } = vue;
   const sig = signal(initialValue);
   const value = ref(initialValue) as Ref<UnwrapRef<T>>;
 
-  sig.subscribe((newValue) => {
+  sig.subscribe((newValue: T) => {
     value.value = newValue as UnwrapRef<T>;
   });
 

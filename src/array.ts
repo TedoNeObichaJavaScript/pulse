@@ -54,7 +54,7 @@ export function array<T>(initialValue: T[] = []): SignalArray<T> {
     if (context) {
       context.dependencies.add(dependencyTracker);
     }
-    return state.value;
+    return [...state.value]; // Return a copy to prevent external mutation
   };
 
   const set = (value: T[]): void => {
@@ -161,24 +161,32 @@ export function array<T>(initialValue: T[] = []): SignalArray<T> {
   };
 
   const length = (): number => {
+    // Access via get() to track dependencies
+    get(); // Track this array as a dependency
     return state.value.length;
   };
 
-  const arrayFn = Object.assign(get, {
-    set,
-    update,
-    subscribe,
-    push,
-    pop,
-    shift,
-    unshift,
-    splice,
-    sort,
-    reverse,
-    filter,
-    map,
-    length,
-  }) as SignalArray<T>;
+  // Create a callable function that returns the array value
+  const arrayFn = get as SignalArray<T>;
+  arrayFn.set = set;
+  arrayFn.update = update;
+  arrayFn.subscribe = subscribe;
+  arrayFn.push = push;
+  arrayFn.pop = pop;
+  arrayFn.shift = shift;
+  arrayFn.unshift = unshift;
+  arrayFn.splice = splice;
+  arrayFn.sort = sort;
+  arrayFn.reverse = reverse;
+  arrayFn.filter = filter;
+  arrayFn.map = map;
+  // Use Object.defineProperty for length since it's read-only on functions
+  Object.defineProperty(arrayFn, 'length', {
+    value: length,
+    writable: true,
+    enumerable: false,
+    configurable: true,
+  });
 
   return arrayFn;
 }

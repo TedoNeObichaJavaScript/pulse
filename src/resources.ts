@@ -123,7 +123,7 @@ export function dependentResource<T, Dependencies extends readonly Signal<any>[]
     currentDeps = dependencies.map((dep) => dep());
 
     try {
-      const result = await fetcher(...currentDeps);
+      const result = await fetcher(...(currentDeps as any));
       data.set(result);
       loading.set(false);
       retryCount = 0;

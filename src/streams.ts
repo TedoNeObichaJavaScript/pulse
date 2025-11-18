@@ -4,13 +4,13 @@
  */
 
 import type { Signal } from './signal';
-import { computed } from './computed';
+import { computed, type Computed } from './computed';
 import { signal } from './signal';
 
 /**
  * Maps signal values through a transformation
  */
-export function map<T, U>(sig: Signal<T>, fn: (value: T) => U): Signal<U> {
+export function map<T, U>(sig: Signal<T>, fn: (value: T) => U): Computed<U> {
   return computed(() => fn(sig()));
 }
 
@@ -20,7 +20,7 @@ export function map<T, U>(sig: Signal<T>, fn: (value: T) => U): Signal<U> {
 export function filter<T>(
   sig: Signal<T>,
   predicate: (value: T) => boolean
-): Signal<T | undefined> {
+): Computed<T | undefined> {
   return computed(() => {
     const value = sig();
     return predicate(value) ? value : undefined;
@@ -32,7 +32,7 @@ export function filter<T>(
  */
 export function combineLatest<T extends readonly Signal<any>[]>(
   ...signals: T
-): Signal<{ [K in keyof T]: T[K] extends Signal<infer U> ? U : never }> {
+): Computed<{ [K in keyof T]: T[K] extends Signal<infer U> ? U : never }> {
   return computed(() => {
     return signals.map((sig) => sig()) as any;
   });
@@ -41,7 +41,7 @@ export function combineLatest<T extends readonly Signal<any>[]>(
 /**
  * Takes first N values
  */
-export function take<T>(sig: Signal<T>, count: number): Signal<T | undefined> {
+export function take<T>(sig: Signal<T>, count: number): Computed<T | undefined> {
   let taken = 0;
   return computed(() => {
     if (taken < count) {
@@ -55,7 +55,7 @@ export function take<T>(sig: Signal<T>, count: number): Signal<T | undefined> {
 /**
  * Skips first N values
  */
-export function skip<T>(sig: Signal<T>, count: number): Signal<T> {
+export function skip<T>(sig: Signal<T>, count: number): Computed<T> {
   let skipped = 0;
   return computed(() => {
     if (skipped < count) {
@@ -69,7 +69,7 @@ export function skip<T>(sig: Signal<T>, count: number): Signal<T> {
 /**
  * Distinct values only
  */
-export function distinct<T>(sig: Signal<T>): Signal<T> {
+export function distinct<T>(sig: Signal<T>): Computed<T> {
   let lastValue: T | undefined;
   return computed(() => {
     const value = sig();
@@ -87,7 +87,7 @@ export function distinct<T>(sig: Signal<T>): Signal<T> {
 export function distinctBy<T, K>(
   sig: Signal<T>,
   keySelector: (value: T) => K
-): Signal<T> {
+): Computed<T> {
   const seen = new Set<K>();
   return computed(() => {
     const value = sig();
@@ -104,7 +104,7 @@ export function distinctBy<T, K>(
 /**
  * Throttles signal updates
  */
-export function throttle<T>(sig: Signal<T>, delay: number): Signal<T> {
+export function throttle<T>(sig: Signal<T>, delay: number): Computed<T> {
   let lastUpdate = 0;
   let lastValue: T = sig();
   return computed(() => {
@@ -145,7 +145,7 @@ export function scan<T, U>(
   sig: Signal<T>,
   accumulator: (acc: U, value: T) => U,
   seed: U
-): Signal<U> {
+): Computed<U> {
   let acc = seed;
   return computed(() => {
     acc = accumulator(acc, sig());

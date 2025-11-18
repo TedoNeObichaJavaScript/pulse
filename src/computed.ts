@@ -77,15 +77,31 @@ export function computed<T>(fn: () => T): Computed<T> {
       unsubscribers.push(
         dep.subscribe(() => {
           state.isDirty = true;
-          // Notify subscribers without recomputing immediately (lazy)
-          state.subscribers.forEach((callback) => {
-            try {
-              // Only recompute when accessed, not on every dependency change
-              callback(state.value as T);
-            } catch (error) {
-              console.error('Error in computed subscriber:', error);
+          // Recompute immediately to get new value for subscribers
+          const oldValue = state.value;
+          try {
+            // Recompute to get new value
+            const newValue = compute();
+            // Only notify if value actually changed
+            if (newValue !== oldValue) {
+              state.subscribers.forEach((callback) => {
+                try {
+                  callback(newValue);
+                } catch (error) {
+                  console.error('Error in computed subscriber:', error);
+                }
+              });
             }
-          });
+          } catch (error) {
+            // On error, notify with old value
+            state.subscribers.forEach((callback) => {
+              try {
+                callback(oldValue as T);
+              } catch (err) {
+                console.error('Error in computed subscriber:', err);
+              }
+            });
+          }
         })
       );
     });

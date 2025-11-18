@@ -109,9 +109,6 @@ export function suspenseComputed<T>(
 /**
  * Creates a suspense-aware resource
  */
-// Import at top level to avoid circular dependency issues
-import { resource as createResource } from './resources';
-
 export function suspenseResource<T>(
   fetcher: () => Promise<T>,
   options?: { initialValue?: T }

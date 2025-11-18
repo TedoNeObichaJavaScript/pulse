@@ -102,6 +102,7 @@ export function optimisticMutation<TData, TVariables = void>(
     ...options,
     onSuccess: (data, variables) => {
       optimistic.isOptimistic.set(false);
+      optimistic.set(data);
       options?.onSuccess?.(data, variables);
     },
     onError: (error, variables) => {
@@ -113,7 +114,8 @@ export function optimisticMutation<TData, TVariables = void>(
   const mutateAsync = async (variables: TVariables): Promise<TData> => {
     if (options?.optimisticUpdate) {
       const optimisticValue = options.optimisticUpdate(variables);
-      return optimistic.optimistic(optimisticValue, () => baseMutation.mutateAsync(variables));
+      const result = await optimistic.optimistic(optimisticValue, () => baseMutation.mutateAsync(variables));
+      return result as TData;
     }
     return baseMutation.mutateAsync(variables);
   };
@@ -128,7 +130,7 @@ export function optimisticMutation<TData, TVariables = void>(
     ...baseMutation,
     mutate,
     mutateAsync,
-    optimistic,
+    optimistic: optimistic as any, // Type assertion needed due to null handling
   };
 }
 

@@ -4,7 +4,7 @@
  */
 
 import type { Signal } from './signal';
-import { computed } from './computed';
+import { computed, type Computed } from './computed';
 
 export type Selector<T, R> = (state: T) => R;
 
@@ -14,7 +14,7 @@ export type Selector<T, R> = (state: T) => R;
 export function createSelector<T, R>(
   sig: Signal<T>,
   selector: Selector<T, R>
-): Signal<R> {
+): Computed<R> {
   return computed(() => selector(sig()));
 }
 
@@ -25,7 +25,7 @@ export function createMemoizedSelector<T, R>(
   sig: Signal<T>,
   selector: Selector<T, R>,
   equalityFn?: (a: R, b: R) => boolean
-): Signal<R> {
+): Computed<R> {
   let lastInput: T | undefined;
   let lastOutput: R | undefined;
 
@@ -56,7 +56,7 @@ export function createMemoizedSelector<T, R>(
 export function createCombinedSelector<T extends readonly Signal<any>[], R>(
   signals: T,
   selector: (...values: { [K in keyof T]: T[K] extends Signal<infer U> ? U : never }) => R
-): Signal<R> {
+): Computed<R> {
   return computed(() => {
     const values = signals.map((sig) => sig()) as any;
     return selector(...values);

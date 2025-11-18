@@ -4,7 +4,7 @@
  */
 
 import type { Signal } from './signal';
-import { computed } from './computed';
+import { computed, type Computed } from './computed';
 
 /**
  * Maps a signal value through a transformation function
@@ -37,7 +37,7 @@ export function reduceSignal<T, U>(
   sig: Signal<T>,
   reducer: (accumulator: U, current: T) => U,
   initialValue: U
-): Signal<U> {
+): Computed<U> {
   let accumulator = initialValue;
   return computed(() => {
     accumulator = reducer(accumulator, sig());
@@ -51,7 +51,7 @@ export function reduceSignal<T, U>(
 export function pipeSignal<T>(
   sig: Signal<T>,
   ...transformers: Array<(value: any) => any>
-): Signal<any> {
+): Computed<any> {
   return computed(() => {
     let value: any = sig();
     for (const transformer of transformers) {

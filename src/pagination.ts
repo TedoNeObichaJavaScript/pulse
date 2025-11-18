@@ -4,7 +4,7 @@
  */
 
 import { signal, type Signal } from './signal';
-import { computed } from './computed';
+import { computed, type Computed } from './computed';
 
 export interface PaginationState {
   page: number;

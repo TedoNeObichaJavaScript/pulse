@@ -38,7 +38,9 @@ export function optimizedComputed<T>(
     // Limit cache size
     if (cache.size > cacheSize) {
       const firstKey = cache.keys().next().value;
-      cache.delete(firstKey);
+      if (firstKey !== undefined) {
+        cache.delete(firstKey);
+      }
     }
     
     return value;

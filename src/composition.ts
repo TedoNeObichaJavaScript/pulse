@@ -5,21 +5,21 @@
 
 import type { Signal } from './signal';
 import { signal } from './signal';
-import { computed } from './computed';
+import { computed, type Computed } from './computed';
 
 /**
  * Composes multiple signals into one
  */
 export function composeSignals<T extends Record<string, Signal<any>>>(
   signals: T
-): Signal<{ [K in keyof T]: T[K] extends Signal<infer U> ? U : never }> {
+): Computed<{ [K in keyof T]: T[K] extends Signal<infer U> ? U : never }> {
   return computed(() => {
     const result: any = {};
     for (const [key, sig] of Object.entries(signals)) {
       result[key] = sig();
     }
     return result;
-  }) as Signal<{ [K in keyof T]: T[K] extends Signal<infer U> ? U : never }>;
+  });
 }
 
 /**
@@ -27,10 +27,10 @@ export function composeSignals<T extends Record<string, Signal<any>>>(
  */
 export function combineSignals<T extends readonly Signal<any>[]>(
   ...signals: T
-): Signal<{ [K in keyof T]: T[K] extends Signal<infer U> ? U : never }> {
+): Computed<{ [K in keyof T]: T[K] extends Signal<infer U> ? U : never }> {
   return computed(() => {
     return signals.map((sig) => sig()) as any;
-  }) as Signal<{ [K in keyof T]: T[K] extends Signal<infer U> ? U : never }>;
+  });
 }
 
 /**
@@ -39,7 +39,7 @@ export function combineSignals<T extends readonly Signal<any>[]>(
 export function deriveSignal<T, U extends readonly Signal<any>[]>(
   fn: (...values: { [K in keyof U]: U[K] extends Signal<infer V> ? V : never }) => T,
   ...signals: U
-): Signal<T> {
+): Computed<T> {
   return computed(() => {
     const values = signals.map((sig) => sig()) as any;
     return fn(...values);
@@ -52,7 +52,7 @@ export function deriveSignal<T, U extends readonly Signal<any>[]>(
 export function switchSignal<T>(
   condition: Signal<number>,
   ...signals: Signal<T>[]
-): Signal<T> {
+): Computed<T> {
   return computed(() => {
     const index = condition();
     if (index >= 0 && index < signals.length) {
@@ -68,7 +68,7 @@ export function switchSignal<T>(
 export function mergeSignalsWith<T, U>(
   mergeFn: (values: T[]) => U,
   ...signals: Signal<T>[]
-): Signal<U> {
+): Computed<U> {
   return computed(() => {
     const values = signals.map((sig) => sig());
     return mergeFn(values);
@@ -81,7 +81,7 @@ export function mergeSignalsWith<T, U>(
 export function pickSignal<T, K extends keyof T>(
   sig: Signal<T>,
   ...keys: K[]
-): Signal<Pick<T, K>> {
+): Computed<Pick<T, K>> {
   return computed(() => {
     const value = sig();
     const result: any = {};
@@ -98,7 +98,7 @@ export function pickSignal<T, K extends keyof T>(
 export function omitSignal<T, K extends keyof T>(
   sig: Signal<T>,
   ...keys: K[]
-): Signal<Omit<T, K>> {
+): Computed<Omit<T, K>> {
   return computed(() => {
     const value = sig();
     const result: any = { ...value };
@@ -115,7 +115,7 @@ export function omitSignal<T, K extends keyof T>(
 export function mapSignal<T, U>(
   sig: Signal<T[]>,
   mapper: (item: T, index: number) => U
-): Signal<U[]> {
+): Computed<U[]> {
   return computed(() => {
     return sig().map(mapper);
   });
@@ -127,7 +127,7 @@ export function mapSignal<T, U>(
 export function filterSignal<T>(
   sig: Signal<T[]>,
   predicate: (item: T, index: number) => boolean
-): Signal<T[]> {
+): Computed<T[]> {
   return computed(() => {
     return sig().filter(predicate);
   });
@@ -140,7 +140,7 @@ export function reduceSignal<T, U>(
   sig: Signal<T[]>,
   reducer: (acc: U, item: T, index: number) => U,
   initial: U
-): Signal<U> {
+): Computed<U> {
   return computed(() => {
     return sig().reduce(reducer, initial);
   });

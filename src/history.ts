@@ -100,6 +100,7 @@ export function historySignal<T>(
       history.push({
         value,
         timestamp: Date.now(),
+        label: undefined,
       });
 
       // Limit history size
@@ -141,7 +142,7 @@ export function historySignal<T>(
 
   const clearHistory = (): void => {
     history.length = 0;
-    history.push({ value: sig(), timestamp: Date.now() });
+    history.push({ value: sig(), timestamp: Date.now(), label: undefined });
     historyIndex = 0;
   };
 
@@ -170,6 +171,9 @@ export function historySignal<T>(
   };
 
   const snapshot = (label?: string): void => {
+    if (history.length > 0 && historyIndex < history.length) {
+      history[historyIndex].label = label;
+    }
     if (enabled) {
       // Remove any history after current index
       history.splice(historyIndex + 1);

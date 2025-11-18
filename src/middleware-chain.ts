@@ -5,6 +5,8 @@
 
 import type { Signal } from './signal';
 import type { Middleware } from './middleware';
+import { signal } from './signal';
+import { loggingMiddleware, validationMiddleware, transformMiddleware, throttleMiddleware, debounceMiddleware } from './middleware';
 
 /**
  * Creates a chainable middleware builder

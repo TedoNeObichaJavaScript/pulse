@@ -4,7 +4,7 @@
  */
 
 import { signal, type Signal } from './signal';
-import { computed } from './computed';
+import { computed, type Computed } from './computed';
 import { resource, type Resource } from './resources';
 
 export interface QueryOptions<T> {
@@ -93,14 +93,17 @@ export function query<T>(
     });
   }
 
-  const queryInstance: Query<T> = {
+  const queryFn = (() => res()) as Query<T>;
+  Object.assign(queryFn, {
     ...res,
     isStale,
     isFetching,
     lastFetched,
     invalidate,
     refetch,
-  };
+  });
+  
+  const queryInstance = queryFn;
 
   queryCache.set(key, queryInstance);
   queryTimestamps.set(key, Date.now());

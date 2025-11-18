@@ -431,7 +431,7 @@ export {
 // Performance Improvements
 export {
   debounceReads,
-  immutableSignal,
+  immutableSignal as immutableSignalPerf,
   autoBatchSignal,
 } from './performance-improvements';
 
@@ -519,7 +519,7 @@ export {
 export {
   enableDevTools,
   registerSignalDevTools,
-  devToolsSignal,
+  devToolsSignal as devToolsSignalLegacy,
   logSignalUpdates,
   profileSignal,
   type DevToolsOptions,
@@ -556,15 +556,15 @@ export {
 // Composition
 export {
   composeSignals,
-  combineSignals,
+  combineSignals as combineSignalsComposition,
   deriveSignal,
   switchSignal,
   mergeSignalsWith,
   pickSignal,
   omitSignal,
-  mapSignal,
-  filterSignal,
-  reduceSignal,
+  mapSignal as mapSignalComposition,
+  filterSignal as filterSignalComposition,
+  reduceSignal as reduceSignalComposition,
 } from './composition';
 
 // Type Utilities
@@ -585,10 +585,10 @@ export {
 // Testing Helpers
 export {
   createSignalSpy,
-  waitForSignal,
-  collectSignalValues,
+  waitForSignal as waitForSignalHelper,
+  collectSignalValues as collectSignalValuesHelper,
   createTestSignal,
-  mockSignal,
+  mockSignal as mockSignalHelper,
   trackSignalReads,
 } from './testing-helpers';
 
@@ -596,10 +596,10 @@ export {
 export {
   snapshotSignals,
   compareSnapshots,
-  traceSignal,
+  traceSignal as traceSignalDebug,
   visualizeDependencies,
-  debugSignal,
-  inspectSignal,
+  debugSignal as debugSignalTool,
+  inspectSignal as inspectSignalTool,
   type SignalSnapshot,
 } from './debugging-tools';
 
@@ -689,7 +689,7 @@ export {
   optimisticSignal,
   createOptimisticUpdate,
   optimisticBatch,
-  optimisticMutation,
+  optimisticMutation as optimisticMutationUpdate,
   type OptimisticSignal,
   type OptimisticUpdate,
 } from './optimistic';

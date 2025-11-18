@@ -44,8 +44,10 @@ export function optimisticSignal<T>(initialValue: T): OptimisticSignal<T> {
       rollbackFn = null;
       return result;
     } catch (error) {
-      rollbackFn();
-      rollbackFn = null;
+      if (rollbackFn) {
+        rollbackFn();
+        rollbackFn = null;
+      }
       throw error;
     }
   };

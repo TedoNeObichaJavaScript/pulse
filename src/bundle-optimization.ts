@@ -38,6 +38,12 @@ export function minimalSignal<T>(initialValue: T): {
 /**
  * Feature detection for conditional loading
  */
+// WeakRef type declaration for TypeScript
+declare const WeakRef: {
+  new <T extends object>(target: T): { deref: () => T | undefined };
+  prototype: { deref: () => any };
+} | undefined;
+
 export const hasFeatures = {
   localStorage: typeof localStorage !== 'undefined',
   sessionStorage: typeof sessionStorage !== 'undefined',

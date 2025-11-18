@@ -10,19 +10,19 @@ export default defineConfig({
       formats: ['es', 'cjs'],
     },
     rollupOptions: {
+      // Mark React and Vue as external dependencies (peer dependencies)
+      // They should be provided by the consuming application
+      external: ['react', 'vue'],
       output: {
         preserveModules: false, // Better tree shaking
-        // Minify for production
-        minify: 'terser',
-        terserOptions: {
-          compress: {
-            drop_console: false, // Keep console for debugging
-            drop_debugger: true,
-            pure_funcs: ['console.debug'], // Remove debug logs
-          },
+        globals: {
+          react: 'React',
+          vue: 'Vue',
         },
       },
     },
+    // Minify for production (using esbuild - faster and already included with Vite)
+    minify: 'esbuild',
     // Optimize chunk size
     chunkSizeWarningLimit: 1000,
     // Source maps for debugging
