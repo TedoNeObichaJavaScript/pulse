@@ -369,6 +369,29 @@ export {
   type CircuitBreakerOptions,
 } from './circuit-breaker';
 
+// Rate Limiter
+export {
+  rateLimitedSignal,
+  tokenBucketSignal,
+  type RateLimiterOptions,
+} from './rate-limiter';
+
+// Backpressure
+export {
+  backpressureSignal,
+  type BackpressureOptions,
+} from './backpressure';
+
+// Advanced Batching
+export {
+  priorityBatch,
+  conditionalBatch,
+  scheduledBatch,
+  cancellableBatch,
+  batchSignalUpdates,
+  type BatchStrategy,
+} from './batching-advanced';
+
 // Dependency tracking
 export { getCurrentContext, setCurrentContext } from './context';
 
