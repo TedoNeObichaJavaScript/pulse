@@ -57,6 +57,24 @@ export {
   type PersistenceOptions,
 } from './persistence';
 
+// Validation & Contracts
+export {
+  contract,
+  typeContract,
+  rangeContract,
+  lengthContract,
+  arrayLengthContract,
+  patternContract,
+  shapeContract,
+  unionContract,
+  optionalContract,
+  validatedSignal,
+  validate,
+  type Contract,
+  type Validator,
+  type ValidatedSignalOptions,
+} from './validation';
+
 // Dependency tracking
 export { getCurrentContext, setCurrentContext } from './context';
 
