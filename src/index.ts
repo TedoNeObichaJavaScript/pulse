@@ -190,6 +190,22 @@ export {
   type PriorityOptions,
 } from './priority';
 
+// Reactive Streams/Operators
+export {
+  map,
+  filter,
+  combineLatest,
+  take,
+  skip,
+  distinct,
+  distinctBy,
+  throttle,
+  debounce,
+  scan,
+  sample,
+  delay,
+} from './streams';
+
 // Dependency tracking
 export { getCurrentContext, setCurrentContext } from './context';
 
