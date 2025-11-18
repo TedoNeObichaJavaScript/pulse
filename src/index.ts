@@ -616,4 +616,192 @@ export {
 // Dependency tracking
 export { getCurrentContext, setCurrentContext } from './context';
 
+// Atoms - Atomic state management
+export {
+  atom,
+  computedAtom,
+  derivedAtom,
+  writableDerivedAtom,
+  getAtom,
+  splitAtom,
+  focusAtom,
+  combineAtoms,
+  asyncAtom,
+  type Atom,
+  type ReadOnlyAtom,
+} from './atoms';
+
+// Resources - Resource management for async data
+export {
+  resource,
+  dependentResource,
+  promiseResource,
+  parallelResources,
+  type Resource,
+  type ResourceOptions,
+} from './resources';
+
+// Suspense - Suspense integration
+export {
+  createSuspense,
+  getCurrentSuspense,
+  withSuspense,
+  suspenseComputed,
+  suspenseResource,
+  lazySuspenseResource,
+  type SuspenseBoundary,
+} from './suspense';
+
+// Transitions - Non-urgent updates
+export {
+  createTransition,
+  getCurrentTransition,
+  withTransition,
+  startTransition,
+  transitionSignal,
+  transitionBatch,
+  type Transition,
+} from './transitions';
+
+// Scopes - Scoped signals
+export {
+  createScope,
+  getCurrentScope,
+  withScope,
+  scopedEffect,
+  autoScope,
+  type Scope,
+} from './scopes';
+
+// Refs - Reference-based signals
+export {
+  ref,
+  reactiveRef,
+  mutableRef,
+  refCallback,
+  forwardRef,
+  mergeRefs,
+  type Ref,
+} from './refs';
+
+// Optimistic Updates
+export {
+  optimisticSignal,
+  createOptimisticUpdate,
+  optimisticBatch,
+  optimisticMutation,
+  type OptimisticSignal,
+  type OptimisticUpdate,
+} from './optimistic';
+
+// Prefetching
+export {
+  prefetchableResource,
+  onHoverPrefetch,
+  onFocusPrefetch,
+  linkPrefetch,
+  prefetchOnMount,
+  createPrefetchManager,
+  viewportPrefetch,
+} from './prefetching';
+
+// Offline Support
+export {
+  createOfflineManager,
+  offlineSignal,
+  getOfflineManager,
+  type OfflineManager,
+  type OfflineQueueItem,
+} from './offline';
+
+// Conflict Resolution
+export {
+  createConflictResolver,
+  conflictAwareSignal,
+  threeWayMerge,
+  timestampResolver,
+  type ConflictResolutionStrategy,
+  type Conflict,
+  type ConflictResolver,
+} from './conflict-resolution';
+
+// Versioning
+export {
+  versionedSignal,
+  createMigration,
+  migrateState,
+  versionedStore,
+  type VersionedState,
+  type VersionManager,
+  type Migration,
+} from './versioning';
+
+// Hot Reload
+export {
+  registerForHotReload,
+  getHotReloadSignal,
+  onHotReload,
+  triggerHotReload,
+  hotReloadableSignal,
+  preserveSignalState,
+  clearHotReloadState,
+} from './hot-reload';
+
+// Immutability Helpers
+export {
+  produce,
+  deepClone,
+  immutableSignal,
+  freeze,
+  deepFreeze,
+  draft,
+  applyPatches,
+  createPatches,
+} from './immutability-helpers';
+
+// Pagination
+export {
+  paginatedSignal,
+  paginateArray,
+  type PaginatedSignal,
+  type PaginationState,
+} from './pagination';
+
+// Infinite Scroll
+export {
+  infiniteScrollSignal,
+  infiniteScrollResource,
+  virtualInfiniteScroll,
+  type InfiniteScrollSignal,
+  type InfiniteScrollOptions,
+} from './infinite-scroll';
+
+// Queries - Server state management
+export {
+  query,
+  invalidateQueries,
+  prefetchQuery,
+  getQuery,
+  type Query,
+  type QueryOptions,
+} from './queries';
+
+// Mutations
+export {
+  mutation,
+  optimisticMutation,
+  retryMutation,
+  type Mutation,
+  type MutationOptions,
+} from './mutations';
+
+// Cache Invalidation
+export {
+  createCacheInvalidator,
+  timeBasedInvalidation,
+  dependencyBasedInvalidation,
+  getCacheInvalidator,
+  type CacheInvalidator,
+} from './cache-invalidation';
+
 
