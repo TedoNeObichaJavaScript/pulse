@@ -271,6 +271,44 @@ export {
   type WebSocketSignalOptions,
 } from './websocket';
 
+// Dependency Graph
+export {
+  registerSignal,
+  getDependencyGraph,
+  getDependencies,
+  getDependents,
+  exportDependencyGraph,
+  visualizeDependencyGraph,
+  type DependencyNode,
+} from './dependency-graph';
+
+// Context API
+export {
+  createSignalContext,
+  useContext,
+  useSignalContext,
+  type SignalContext,
+} from './context-api';
+
+// Selectors
+export {
+  createSelector,
+  createMemoizedSelector,
+  createCombinedSelector,
+  type Selector,
+} from './selectors';
+
+// Providers
+export {
+  provide,
+  inject,
+  provideSignal,
+  injectSignal,
+  createProviderScope,
+  type Provider,
+  type SignalProvider,
+} from './providers';
+
 // Dependency tracking
 export { getCurrentContext, setCurrentContext } from './context';
 
