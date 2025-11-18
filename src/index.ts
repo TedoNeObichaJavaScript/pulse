@@ -257,6 +257,20 @@ export {
   type StateTransition,
 } from './statemachine';
 
+// Animations
+export {
+  animateSignal,
+  animatedSignal,
+  easing,
+  type AnimationOptions,
+} from './animations';
+
+// WebSocket
+export {
+  websocketSignal,
+  type WebSocketSignalOptions,
+} from './websocket';
+
 // Dependency tracking
 export { getCurrentContext, setCurrentContext } from './context';
 
