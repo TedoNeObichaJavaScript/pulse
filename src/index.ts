@@ -13,6 +13,9 @@ export { readonly, readonlyComputed, type ReadonlySignal, type ReadonlyComputed 
 // Derived stores
 export { derived, derivedFrom, type DerivedStore } from './derived';
 
+// Array signals
+export { array, type SignalArray } from './array';
+
 // Dependency tracking
 export { getCurrentContext, setCurrentContext } from './context';
 
