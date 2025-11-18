@@ -232,6 +232,31 @@ export {
   formSignal,
 } from './factory';
 
+// Timers
+export {
+  timerSignal,
+  intervalSignal,
+  timeoutSignal,
+  dateSignal,
+} from './timers';
+
+// Observables
+export {
+  signalToObservable,
+  observableToSignal,
+  fromSignal,
+  type Observable,
+  type Observer,
+} from './observable';
+
+// State Machine
+export {
+  stateMachine,
+  type StateMachine,
+  type StateMachineConfig,
+  type StateTransition,
+} from './statemachine';
+
 // Dependency tracking
 export { getCurrentContext, setCurrentContext } from './context';
 
