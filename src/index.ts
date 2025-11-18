@@ -44,6 +44,19 @@ export {
   type Middleware,
 } from './middleware';
 
+// Persistence
+export {
+  persistentSignal,
+  localStorageSignal,
+  sessionStorageSignal,
+  hydrateSignal,
+  clearPersistedSignal,
+  localStorageAdapter,
+  sessionStorageAdapter,
+  type StorageAdapter,
+  type PersistenceOptions,
+} from './persistence';
+
 // Dependency tracking
 export { getCurrentContext, setCurrentContext } from './context';
 
