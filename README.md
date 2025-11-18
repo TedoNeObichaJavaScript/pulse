@@ -56,6 +56,14 @@ When you create a **signal** (a reactive variable), any **computed values** or *
 - 📬 **Queues** - Queue system for managing signal updates
 - ⚡ **Priorities** - Priority-based update scheduling
 - 🌊 **Reactive Streams** - RxJS-like operators (map, filter, debounce, throttle, etc.)
+- 🐛 **Debugging** - Enhanced debugging utilities with logging and tracing
+- 🧠 **Memory Leak Detection** - Automatic detection of memory leaks
+- 🏭 **Factory Patterns** - Counter, toggle, form, and other common patterns
+- ⏱️ **Timers** - Reactive timers, intervals, and timeouts
+- 👁️ **Observables** - Observable pattern integration (RxJS compatible)
+- 🔄 **State Machine** - State machine pattern with signals
+- 🎬 **Animations** - Signal-driven animations with easing functions
+- 🌐 **WebSocket** - Reactive WebSocket integration with auto-reconnect
 
 ## Installation
 
