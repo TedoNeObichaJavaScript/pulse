@@ -64,6 +64,21 @@ When you create a **signal** (a reactive variable), any **computed values** or *
 - 🔄 **State Machine** - State machine pattern with signals
 - 🎬 **Animations** - Signal-driven animations with easing functions
 - 🌐 **WebSocket** - Reactive WebSocket integration with auto-reconnect
+- 📊 **Dependency Graph** - Build and visualize signal dependency graphs
+- 🔗 **Context API** - Context-based signal sharing (React-like)
+- 🎯 **Selectors** - Selector pattern for derived state
+- 🏗️ **Providers** - Provider pattern for dependency injection
+- ⚡ **Enhanced Effects** - Effects with better cleanup and lifecycle
+- ⚖️ **Comparators** - Deep/shallow equality and custom comparators
+- 🔧 **Patchers** - Patch-based updates for objects (JSON Patch)
+- 🔄 **Reducers** - Redux-like reducer pattern
+- 📋 **Subscription Manager** - Manage multiple subscriptions
+- 📡 **Event Emitter** - Event emitter pattern with signals
+- 🔁 **Retry Logic** - Retry failed operations with backoff
+- ⚡ **Circuit Breaker** - Circuit breaker pattern for fault tolerance
+- 🚦 **Rate Limiter** - Rate limiting for signal updates
+- 💨 **Backpressure** - Backpressure handling for high-frequency updates
+- 📦 **Advanced Batching** - Priority, conditional, and scheduled batching
 
 ## Installation
 
