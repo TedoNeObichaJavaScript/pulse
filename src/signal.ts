@@ -11,18 +11,28 @@ export interface Signal<T> {
   subscribe(callback: (value: T) => void): () => void;
 }
 
+export interface SignalOptions<T> {
+  /**
+   * Custom equality function to determine if two values are equal
+   * If provided, signal will only notify subscribers if values are not equal
+   */
+  equals?: (a: T, b: T) => boolean;
+}
+
 type SignalState<T> = {
   value: T;
   subscribers: Set<(value: T) => void>;
+  equals?: (a: T, b: T) => boolean;
 };
 
 /**
  * Creates a reactive signal
  */
-export function signal<T>(initialValue: T): Signal<T> {
+export function signal<T>(initialValue: T, options?: SignalOptions<T>): Signal<T> {
   const state: SignalState<T> = {
     value: initialValue,
     subscribers: new Set(),
+    equals: options?.equals,
   };
 
   // Create a dependency tracker object for this signal
@@ -50,7 +60,12 @@ export function signal<T>(initialValue: T): Signal<T> {
   };
 
   const set = (value: T): void => {
-    if (state.value !== value) {
+    // Check equality using custom function or default strict equality
+    const isEqual = state.equals 
+      ? state.equals(state.value, value)
+      : state.value === value;
+    
+    if (!isEqual) {
       state.value = value;
       
       // Notify all subscribers

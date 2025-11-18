@@ -49,6 +49,54 @@ describe('signal', () => {
     count.set(2);
     expect(callCount).toBe(1); // Should not increment
   });
+
+  it('should use custom equality function', () => {
+    const obj = signal({ count: 0 }, {
+      equals: (a, b) => a.count === b.count
+    });
+    
+    let notifyCount = 0;
+    obj.subscribe(() => {
+      notifyCount++;
+    });
+
+    // Same count value - should not notify
+    obj.set({ count: 0 });
+    expect(notifyCount).toBe(0);
+    expect(obj().count).toBe(0);
+
+    // Different count value - should notify
+    obj.set({ count: 1 });
+    expect(notifyCount).toBe(1);
+    expect(obj().count).toBe(1);
+
+    // Same count value again - should not notify
+    obj.set({ count: 1 });
+    expect(notifyCount).toBe(1);
+  });
+
+  it('should use deep equality for objects', () => {
+    const deepEquals = (a: any, b: any): boolean => {
+      if (a === b) return true;
+      if (typeof a !== 'object' || typeof b !== 'object') return false;
+      if (a === null || b === null) return false;
+      const keysA = Object.keys(a);
+      const keysB = Object.keys(b);
+      if (keysA.length !== keysB.length) return false;
+      for (const key of keysA) {
+        if (!keysB.includes(key) || !deepEquals(a[key], b[key])) return false;
+      }
+      return true;
+    };
+
+    const obj = signal({ a: 1, b: { c: 2 } }, { equals: deepEquals });
+    let notifyCount = 0;
+    obj.subscribe(() => notifyCount++);
+
+    obj.set({ a: 1, b: { c: 2 } }); // Same structure
+    expect(notifyCount).toBe(0);
+
+    obj.set({ a: 1, b: { c: 3 } }); // Different value
+    expect(notifyCount).toBe(1);
+  });
 });
-
-
