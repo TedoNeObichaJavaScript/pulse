@@ -435,6 +435,46 @@ export {
   autoBatchSignal,
 } from './performance-improvements';
 
+// Utilities
+export {
+  cloneSignal,
+  cloneSignalValue,
+  mergeSignals,
+  signalDiff,
+  signalsEqual,
+  promiseSignal,
+  eventSignal,
+  getterSignal,
+  syncSignal,
+} from './utilities';
+
+// Serialization
+export {
+  serializeSignal,
+  deserializeSignal,
+  serializableSignal,
+  exportSignalStates,
+  importSignalStates,
+  type SerializationOptions,
+} from './serialization';
+
+// Plugins
+export {
+  usePlugin,
+  unusePlugin,
+  getPlugins,
+  getPluginAPI,
+  type PulsePlugin,
+  type PulsePluginAPI,
+} from './plugins';
+
+// Middleware Chain
+export {
+  MiddlewareChain,
+  createMiddlewareChain,
+  signalWith,
+} from './middleware-chain';
+
 // Dependency tracking
 export { getCurrentContext, setCurrentContext } from './context';
 
