@@ -4,6 +4,7 @@
  */
 
 import type { Signal } from './signal';
+import { signal } from './signal';
 
 /**
  * Prevents infinite loops in effects

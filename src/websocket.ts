@@ -29,7 +29,7 @@ export function websocketSignal<T = string>(
 } {
   const {
     protocols,
-    reconnect = true,
+    reconnect: shouldReconnect = true,
     reconnectInterval = 1000,
     maxReconnectAttempts = Infinity,
     onOpen,
@@ -76,7 +76,7 @@ export function websocketSignal<T = string>(
           onClose();
         }
 
-        if (!isManualClose && reconnect && reconnectAttempts < maxReconnectAttempts) {
+        if (!isManualClose && shouldReconnect && reconnectAttempts < maxReconnectAttempts) {
           reconnectAttempts++;
           reconnectTimer = setTimeout(() => {
             connect();

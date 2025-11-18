@@ -128,7 +128,7 @@ export {
 // Conditional Subscriptions
 export {
   conditionalSubscribe,
-  conditionalEffect,
+  conditionalEffect as conditionalSubscribeEffect,
 } from './conditional';
 
 // Caching
@@ -494,7 +494,7 @@ export {
 export {
   isSSR,
   ssrSignal,
-  hydrateSignal,
+  hydrateSignal as hydrateSignalSSR,
   getSignalState,
   serializeForSSR,
   deserializeFromSSR,

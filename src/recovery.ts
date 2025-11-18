@@ -35,22 +35,24 @@ export function recoverableSignal<T>(
     }
   };
 
-  return {
-    (): T {
-      return sig();
-    },
-    set: safeSet,
-    update: (fn: (value: T) => T) => {
-      try {
-        safeSet(fn(sig()));
-      } catch (error) {
-        // Error already handled in safeSet
-      }
-    },
-    subscribe: sig.subscribe.bind(sig),
-    hasError: () => hasError,
-    getError: () => lastError,
-  } as Signal<T> & { hasError: () => boolean; getError: () => Error | null };
+  const get = (): T => {
+    return sig();
+  };
+
+  const recoverableSig = get as Signal<T> & { hasError: () => boolean; getError: () => Error | null };
+  recoverableSig.set = safeSet;
+  recoverableSig.update = (fn: (value: T) => T) => {
+    try {
+      safeSet(fn(sig()));
+    } catch (error) {
+      // Error already handled in safeSet
+    }
+  };
+  recoverableSig.subscribe = sig.subscribe.bind(sig);
+  recoverableSig.hasError = () => hasError;
+  recoverableSig.getError = () => lastError;
+
+  return recoverableSig;
 }
 
 /**

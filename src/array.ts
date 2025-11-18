@@ -1,5 +1,6 @@
 import { signal, type Signal } from './signal';
 import { scheduleUpdate, isBatchingUpdates } from './batch';
+import { getCurrentContext } from './context';
 
 /**
  * A reactive array signal with array mutation methods

@@ -3,6 +3,7 @@
  * React hooks for Pulse signals
  */
 
+// @ts-ignore - React is an optional dependency
 import { useEffect, useState, useCallback, useRef } from 'react';
 import type { Signal } from '../signal';
 
@@ -23,7 +24,7 @@ export function useSignal<T>(sig: Signal<T>): [T, (value: T) => void] {
 
   const update = useCallback((newValue: T) => {
     sigRef.current.set(newValue);
-  }, []);
+  }, []) as (value: T) => void;
 
   return [value, update];
 }
@@ -49,7 +50,7 @@ export function useComputed<T>(computed: Signal<T>): T {
  */
 export function usePulseEffect(
   fn: () => void | (() => void),
-  deps?: React.DependencyList
+  deps?: any[]
 ): void {
   useEffect(() => {
     const { effect } = require('../effect');

@@ -4,6 +4,7 @@
  */
 
 import type { Signal } from './signal';
+import { signal } from './signal';
 import { batch } from './batch';
 
 /**
@@ -18,21 +19,23 @@ export function debounceReads<T>(
 
   const originalGet = sig.bind(sig);
 
-  return {
-    (): T {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-      timeoutId = setTimeout(() => {
-        cachedValue = originalGet();
-        timeoutId = null;
-      }, delay);
-      return cachedValue;
-    },
-    set: sig.set.bind(sig),
-    update: sig.update.bind(sig),
-    subscribe: sig.subscribe.bind(sig),
-  } as Signal<T>;
+  const get = (): T => {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+    timeoutId = setTimeout(() => {
+      cachedValue = originalGet();
+      timeoutId = null;
+    }, delay);
+    return cachedValue;
+  };
+
+  const debouncedSig = get as Signal<T>;
+  debouncedSig.set = sig.set.bind(sig);
+  debouncedSig.update = sig.update.bind(sig);
+  debouncedSig.subscribe = sig.subscribe.bind(sig);
+
+  return debouncedSig;
 }
 
 /**

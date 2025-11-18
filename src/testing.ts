@@ -70,25 +70,27 @@ export function mockSignal<T>(value: T): Signal<T> {
   let currentValue = value;
   const subscribers = new Set<(value: T) => void>();
 
-  return {
-    (): T {
-      return currentValue;
-    },
-    set: (newValue: T) => {
-      currentValue = newValue;
-      subscribers.forEach((callback) => callback(newValue));
-    },
-    update: (fn: (value: T) => T) => {
-      currentValue = fn(currentValue);
-      subscribers.forEach((callback) => callback(currentValue));
-    },
-    subscribe: (callback: (value: T) => void) => {
-      subscribers.add(callback);
-      return () => {
-        subscribers.delete(callback);
-      };
-    },
+  const get = (): T => {
+    return currentValue;
   };
+
+  const mockSig = get as Signal<T>;
+  mockSig.set = (newValue: T) => {
+    currentValue = newValue;
+    subscribers.forEach((callback) => callback(newValue));
+  };
+  mockSig.update = (fn: (value: T) => T) => {
+    currentValue = fn(currentValue);
+    subscribers.forEach((callback) => callback(currentValue));
+  };
+  mockSig.subscribe = (callback: (value: T) => void) => {
+    subscribers.add(callback);
+    return () => {
+      subscribers.delete(callback);
+    };
+  };
+
+  return mockSig;
 }
 
 /**

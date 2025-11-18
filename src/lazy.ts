@@ -37,35 +37,37 @@ export function lazyComputed<T>(fn: () => T): Signal<T> {
     return cached;
   };
 
-  return {
-    (): T {
-      return compute();
-    },
-    set: () => {
-      throw new Error('Lazy computed is read-only');
-    },
-    update: () => {
-      throw new Error('Lazy computed is read-only');
-    },
-    subscribe: (callback: (value: T) => void) => {
-      // Subscribe to dependencies
-      const unsubscribers: (() => void)[] = [];
-      dependencies.forEach((dep) => {
-        unsubscribers.push(
-          dep.subscribe(() => {
-            isDirty = true;
-            callback(compute());
-          })
-        );
-      });
+  const get = (): T => {
+    return compute();
+  };
 
-      // Call once
-      callback(compute());
+  const sig = get as Signal<T>;
+  sig.set = () => {
+    throw new Error('Lazy computed is read-only');
+  };
+  sig.update = () => {
+    throw new Error('Lazy computed is read-only');
+  };
+  sig.subscribe = (callback: (value: T) => void) => {
+    // Subscribe to dependencies
+    const unsubscribers: (() => void)[] = [];
+    dependencies.forEach((dep) => {
+      unsubscribers.push(
+        dep.subscribe(() => {
+          isDirty = true;
+          callback(compute());
+        })
+      );
+    });
 
-      return () => {
-        unsubscribers.forEach((unsub) => unsub());
-      };
-    },
-  } as Signal<T>;
+    // Call once
+    callback(compute());
+
+    return () => {
+      unsubscribers.forEach((unsub) => unsub());
+    };
+  };
+
+  return sig;
 }
 

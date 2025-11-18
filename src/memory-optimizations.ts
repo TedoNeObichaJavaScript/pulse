@@ -8,12 +8,12 @@ import type { Signal } from './signal';
 /**
  * Weak reference wrapper for signals
  */
-export function weakSignal<T>(sig: Signal<T>): WeakRef<Signal<T>> {
+export function weakSignal<T>(sig: Signal<T>): WeakRef<Signal<T>> | { deref: () => Signal<T> } {
   if (typeof WeakRef !== 'undefined') {
-    return new WeakRef(sig);
+    return new (WeakRef as any)(sig);
   }
   // Fallback for environments without WeakRef
-  return { deref: () => sig } as WeakRef<Signal<T>>;
+  return { deref: () => sig };
 }
 
 /**

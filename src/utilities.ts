@@ -18,11 +18,15 @@ export function cloneSignalValue<T>(sig: Signal<T>): T {
     return value;
   }
   if (Array.isArray(value)) {
-    return value.map((item) => cloneSignalValue({ () { return item; } } as Signal<any>)) as T;
+    return value.map((item) => {
+      const tempSig = signal(item);
+      return cloneSignalValue(tempSig);
+    }) as T;
   }
   const cloned = {} as T;
   for (const key in value) {
-    (cloned as any)[key] = cloneSignalValue({ () { return (value as any)[key]; } } as Signal<any>);
+    const tempSig = signal((value as any)[key]);
+    (cloned as any)[key] = cloneSignalValue(tempSig);
   }
   return cloned;
 }

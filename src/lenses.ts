@@ -59,22 +59,24 @@ export function lensSignal<T, U>(
   sig: Signal<T>,
   lens: Lens<T, U>
 ): Signal<U> {
-  return {
-    (): U {
-      return lens.get(sig());
-    },
-    set: (value: U) => {
-      sig.set(lens.set(sig(), value));
-    },
-    update: (fn: (value: U) => U) => {
-      sig.set(lens.set(sig(), fn(lens.get(sig()))));
-    },
-    subscribe: (callback: (value: U) => void) => {
-      return sig.subscribe((value) => {
-        callback(lens.get(value));
-      });
-    },
-  } as Signal<U>;
+  const get = (): U => {
+    return lens.get(sig());
+  };
+
+  const lensSig = get as Signal<U>;
+  lensSig.set = (value: U) => {
+    sig.set(lens.set(sig(), value));
+  };
+  lensSig.update = (fn: (value: U) => U) => {
+    sig.set(lens.set(sig(), fn(lens.get(sig()))));
+  };
+  lensSig.subscribe = (callback: (value: U) => void) => {
+    return sig.subscribe((value) => {
+      callback(lens.get(value));
+    });
+  };
+
+  return lensSig;
 }
 
 /**
