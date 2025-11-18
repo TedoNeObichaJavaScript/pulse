@@ -318,6 +318,57 @@ export {
   type EffectOptions,
 } from './effects-enhanced';
 
+// Comparators
+export {
+  deepEqual,
+  shallowEqual,
+  deepEqualSignal,
+  shallowEqualSignal,
+  createComparator,
+} from './comparators';
+
+// Patchers
+export {
+  patchableSignal,
+  applyPatch,
+  type Patch,
+} from './patchers';
+
+// Reducers
+export {
+  reducerSignal,
+  combineReducers,
+  type Reducer,
+  type ReducerSignal,
+} from './reducers';
+
+// Subscription Manager
+export {
+  SubscriptionManager,
+  createSubscriptionManager,
+} from './subscription-manager';
+
+// Event Emitter
+export {
+  createEventEmitter,
+  signalEventEmitter,
+  type EventEmitter,
+  type EventHandler,
+} from './event-emitter';
+
+// Retry Logic
+export {
+  retrySignal,
+  type RetryOptions,
+} from './retry';
+
+// Circuit Breaker
+export {
+  circuitBreaker,
+  type CircuitState,
+  type CircuitBreakerOptions,
+} from './circuit-breaker';
+
 // Dependency tracking
 export { getCurrentContext, setCurrentContext } from './context';
 
