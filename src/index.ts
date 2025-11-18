@@ -90,6 +90,15 @@ export {
   conditionalSignal,
 } from './utils';
 
+// Lifecycle Hooks
+export {
+  lifecycleSignal,
+  destroySignal,
+  addLifecycleHooks,
+  type LifecycleHook,
+  type LifecycleOptions,
+} from './lifecycle';
+
 // Dependency tracking
 export { getCurrentContext, setCurrentContext } from './context';
 
