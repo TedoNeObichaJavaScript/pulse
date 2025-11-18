@@ -99,6 +99,22 @@ export {
   type LifecycleOptions,
 } from './lifecycle';
 
+// Transformers
+export {
+  mapSignal,
+  filterSignal,
+  reduceSignal,
+  pipeSignal,
+  combineSignals,
+  zipSignals,
+} from './transformers';
+
+// Signal Groups
+export {
+  signalGroup,
+  type SignalGroup,
+} from './groups';
+
 // Dependency tracking
 export { getCurrentContext, setCurrentContext } from './context';
 
