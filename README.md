@@ -36,6 +36,26 @@ When you create a **signal** (a reactive variable), any **computed values** or *
 - 🌐 **Async Computed** - Handle async operations with built-in loading and error states
 - 🛡️ **Error Handling** - Global error handlers and error boundaries for robust applications
 - 🔧 **Template Compiler** - Transform template syntax (like Handlebars) into JavaScript render functions
+- 🔌 **Middleware/Interceptors** - Pipeline system for logging, validation, transformation
+- 💾 **Persistence** - localStorage/sessionStorage integration with auto-save and hydration
+- ✅ **Validation & Contracts** - Runtime type checking and schema validation
+- ⏮️ **History & Undo/Redo** - Time-travel debugging with state snapshots
+- ⏱️ **Debounce & Throttle** - Built-in utilities for rate limiting
+- 🔄 **Lifecycle Hooks** - onCreated, onUpdated, onDestroyed hooks
+- 🔀 **Transformers** - Map/filter/reduce operations on signals
+- 👥 **Signal Groups** - Group related signals with batch operations
+- 🔍 **Lenses** - Immutable updates with path-based access
+- 🎯 **Conditional Subscriptions** - Subscribe only when conditions are met
+- 💨 **Caching** - Smart caching with TTL and invalidation
+- 🔗 **Synchronization** - Cross-tab/window state sync with BroadcastChannel
+- 🧪 **Testing Utilities** - Helpers for testing signals in test suites
+- 📊 **Performance Monitoring** - Built-in metrics and performance tracking
+- 🔄 **Error Recovery** - Automatic error recovery with fallback values
+- 🦥 **Lazy Evaluation** - Lazy computed values that only compute when accessed
+- 🧠 **Memoization** - Memoized computed values with dependency tracking
+- 📬 **Queues** - Queue system for managing signal updates
+- ⚡ **Priorities** - Priority-based update scheduling
+- 🌊 **Reactive Streams** - RxJS-like operators (map, filter, debounce, throttle, etc.)
 
 ## Installation
 
