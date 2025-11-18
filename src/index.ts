@@ -206,6 +206,32 @@ export {
   delay,
 } from './streams';
 
+// Debugging
+export {
+  debugSignal,
+  logSignal,
+  getDebugInfo,
+  inspectSignal,
+  traceSignal,
+  type DebugOptions,
+} from './debug';
+
+// Memory Leak Detection
+export {
+  trackSignal,
+  checkMemoryLeaks,
+  getMemoryStats,
+} from './memory';
+
+// Factory Patterns
+export {
+  counterSignal,
+  toggleSignal,
+  boundedSignal,
+  stringSignal,
+  formSignal,
+} from './factory';
+
 // Dependency tracking
 export { getCurrentContext, setCurrentContext } from './context';
 
