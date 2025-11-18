@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="logo.svg" alt="Pulse Logo" width="200" height="200">
+  <img src="logo.svg" alt="Pulse Logo" width="400" height="200">
   <h1>Pulse ⚡</h1>
   <p><strong>A lightweight reactive state engine</strong></p>
   <p>Automatically tracks dependencies between variables and UI components</p>
