@@ -161,6 +161,35 @@ export {
   type PerformanceMetrics,
 } from './performance';
 
+// Error Recovery
+export {
+  recoverableSignal,
+  recoverableComputed,
+} from './recovery';
+
+// Lazy Evaluation
+export {
+  lazyComputed,
+} from './lazy';
+
+// Memoization
+export {
+  memoizedComputed,
+} from './memo';
+
+// Queues
+export {
+  queuedSignal,
+  type QueueOptions,
+} from './queue';
+
+// Priorities
+export {
+  prioritySignal,
+  type Priority,
+  type PriorityOptions,
+} from './priority';
+
 // Dependency tracking
 export { getCurrentContext, setCurrentContext } from './context';
 
