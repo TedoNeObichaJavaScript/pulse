@@ -48,7 +48,9 @@ export function effect(fn: () => void | (() => void)): () => void {
     dependencies.forEach((dep) => {
       unsubscribers.push(
         dep.subscribe(() => {
-          run();
+          if (isActive) {
+            run();
+          }
         })
       );
     });

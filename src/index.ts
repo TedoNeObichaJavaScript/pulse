@@ -413,6 +413,28 @@ export {
   nonNullableSignal,
 } from './edge-cases';
 
+// Memory Optimizations
+export {
+  weakSignal,
+  cleanupUnusedSignals,
+  limitSubscribers,
+} from './memory-optimizations';
+
+// Cleanup Utilities
+export {
+  registerCleanup,
+  cleanupSignal,
+  CleanupManager,
+  createCleanupManager,
+} from './cleanup';
+
+// Performance Improvements
+export {
+  debounceReads,
+  immutableSignal,
+  autoBatchSignal,
+} from './performance-improvements';
+
 // Dependency tracking
 export { getCurrentContext, setCurrentContext } from './context';
 

@@ -77,9 +77,14 @@ export function computed<T>(fn: () => T): Computed<T> {
       unsubscribers.push(
         dep.subscribe(() => {
           state.isDirty = true;
+          // Notify subscribers without recomputing immediately (lazy)
           state.subscribers.forEach((callback) => {
-            // Recompute on next access
-            callback(compute());
+            try {
+              // Only recompute when accessed, not on every dependency change
+              callback(state.value as T);
+            } catch (error) {
+              console.error('Error in computed subscriber:', error);
+            }
           });
         })
       );
