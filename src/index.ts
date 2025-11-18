@@ -506,6 +506,15 @@ export {
   signalFromProxy,
 } from './proxies';
 
+// Workers
+export {
+  workerSignal,
+  computedWorker,
+  createWorkerFromFunction,
+  syncWorkerSignal,
+  type WorkerSignalOptions,
+} from './workers';
+
 // Dependency tracking
 export { getCurrentContext, setCurrentContext } from './context';
 
