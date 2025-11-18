@@ -804,4 +804,15 @@ export {
   type CacheInvalidator,
 } from './cache-invalidation';
 
+// DevTools Extension
+export {
+  createDevToolsExtension,
+  getDevToolsExtension,
+  autoRegisterDevTools,
+  devToolsSignal,
+  devToolsComputed,
+  exposeToDevTools,
+  type DevToolsExtension,
+} from './devtools-extension';
+
 

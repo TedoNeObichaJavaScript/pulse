@@ -4,6 +4,7 @@
  */
 
 import type { Signal } from '../signal';
+import { signal } from '../signal';
 
 /**
  * Checks if running in SSR environment
@@ -16,7 +17,6 @@ export function isSSR(): boolean {
  * Creates an SSR-safe signal
  */
 export function ssrSignal<T>(initialValue: T): Signal<T> {
-  const { signal } = require('../signal');
   return signal(initialValue);
 }
 

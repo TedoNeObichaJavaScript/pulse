@@ -24,7 +24,6 @@ export class MiddlewareChain<T> {
    * Adds logging middleware
    */
   log(label?: string): this {
-    const { loggingMiddleware } = require('./middleware');
     return this.use(loggingMiddleware(label));
   }
 
@@ -32,7 +31,6 @@ export class MiddlewareChain<T> {
    * Adds validation middleware
    */
   validate(validator: (value: T) => boolean, onError?: (value: T) => void): this {
-    const { validationMiddleware } = require('./middleware');
     return this.use(validationMiddleware(validator, onError));
   }
 
@@ -40,7 +38,6 @@ export class MiddlewareChain<T> {
    * Adds transformation middleware
    */
   transform(transformer: (value: T) => T): this {
-    const { transformMiddleware } = require('./middleware');
     return this.use(transformMiddleware(transformer));
   }
 
@@ -48,7 +45,6 @@ export class MiddlewareChain<T> {
    * Adds throttle middleware
    */
   throttle(delay: number): this {
-    const { throttleMiddleware } = require('./middleware');
     return this.use(throttleMiddleware(delay));
   }
 
@@ -56,7 +52,6 @@ export class MiddlewareChain<T> {
    * Adds debounce middleware
    */
   debounce(delay: number): this {
-    const { debounceMiddleware } = require('./middleware');
     return this.use(debounceMiddleware(delay));
   }
 
@@ -88,26 +83,19 @@ export function signalWith<T>(
 } {
   return {
     middleware: (chain: MiddlewareChain<T>) => {
-      const { signal } = require('./signal');
       return signal(initialValue, { middleware: chain.build() });
     },
     validate: (validator: (value: T) => boolean) => {
-      const { signal } = require('./signal');
-      const { validationMiddleware } = require('./middleware');
       return signal(initialValue, {
         middleware: [validationMiddleware(validator)],
       });
     },
     transform: (transformer: (value: T) => T) => {
-      const { signal } = require('./signal');
-      const { transformMiddleware } = require('./middleware');
       return signal(initialValue, {
         middleware: [transformMiddleware(transformer)],
       });
     },
     log: (label?: string) => {
-      const { signal } = require('./signal');
-      const { loggingMiddleware } = require('./middleware');
       return signal(initialValue, {
         middleware: [loggingMiddleware(label)],
       });

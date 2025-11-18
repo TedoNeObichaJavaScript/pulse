@@ -66,13 +66,15 @@ export function isComputed<T>(value: any): value is Signal<T> {
   );
 }
 
+import { signal } from './signal';
+
 /**
  * Creates a type-safe signal factory
  */
+
 export function createTypedSignal<T>() {
   return {
     create: (initialValue: T) => {
-      const { signal } = require('./signal');
       return signal(initialValue);
     },
   };
@@ -89,7 +91,6 @@ export function createBrandedSignal<T, Brand extends string>(
   initialValue: T,
   brand: Brand
 ): BrandedSignal<T, Brand> {
-  const { signal } = require('./signal');
   return signal(initialValue) as BrandedSignal<T, Brand>;
 }
 

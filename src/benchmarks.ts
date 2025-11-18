@@ -5,6 +5,7 @@
 
 import type { Signal } from './signal';
 import { signal } from './signal';
+import { computed } from './computed';
 
 export interface BenchmarkResult {
   name: string;
@@ -90,8 +91,6 @@ export function runBenchmarkSuite(): {
   computedCreation: BenchmarkResult;
   computedRead: BenchmarkResult;
 } {
-  const { computed } = require('./computed');
-
   return {
     signalCreation: benchmarkSignal('Signal Creation', 10000, () => {
       signal(0);

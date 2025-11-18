@@ -5,7 +5,7 @@
 
 import { signal, type Signal } from './signal';
 import { computed, type Computed } from './computed';
-import type { Resource } from './resources';
+import { resource as createResource, type Resource } from './resources';
 
 export interface SuspenseBoundary {
   suspend: () => void;
@@ -109,14 +109,14 @@ export function suspenseComputed<T>(
 /**
  * Creates a suspense-aware resource
  */
+// Import at top level to avoid circular dependency issues
+import { resource as createResource } from './resources';
+
 export function suspenseResource<T>(
   fetcher: () => Promise<T>,
   options?: { initialValue?: T }
 ): Resource<T> & { suspense: () => T } {
-  // Import resource to avoid circular dependency
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const { resource: res } = require('./resources');
-  const resourceInstance = res(fetcher, options);
+  const resourceInstance = createResource(fetcher, options);
   const boundary = getCurrentSuspense();
 
   const suspenseFn = (): T => {
@@ -166,9 +166,7 @@ export function lazySuspenseResource<T>(
 
   return () => {
     if (!resourceInstance) {
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      const { resource: res } = require('./resources');
-      resourceInstance = res(fetcher);
+      resourceInstance = createResource(fetcher);
     }
 
     const data = resourceInstance.data();

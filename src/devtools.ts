@@ -3,7 +3,7 @@
  * Browser DevTools integration for debugging signals
  */
 
-import type { Signal } from './signal';
+import { signal, type Signal } from './signal';
 
 export interface DevToolsOptions {
   enabled?: boolean;
@@ -158,7 +158,6 @@ export function devToolsSignal<T>(
   initialValue: T,
   name?: string
 ): Signal<T> {
-  const { signal } = require('./signal');
   const sig = signal(initialValue);
   registerSignalDevTools(sig, name);
   return sig;
