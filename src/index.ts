@@ -32,6 +32,18 @@ export {
 // Template compiler
 export { compile, type CompiledTemplate, type CompileOptions } from './compiler/index';
 
+// Middleware
+export {
+  createMiddleware,
+  loggingMiddleware,
+  validationMiddleware,
+  transformMiddleware,
+  throttleMiddleware,
+  debounceMiddleware,
+  historyMiddleware,
+  type Middleware,
+} from './middleware';
+
 // Dependency tracking
 export { getCurrentContext, setCurrentContext } from './context';
 
