@@ -16,6 +16,9 @@ export { derived, derivedFrom, type DerivedStore } from './derived';
 // Array signals
 export { array, type SignalArray } from './array';
 
+// Async computed
+export { asyncComputed, type AsyncComputed } from './async-computed';
+
 // Dependency tracking
 export { getCurrentContext, setCurrentContext } from './context';
 
