@@ -48,7 +48,11 @@ export function signal<T>(initialValue: T, options?: SignalOptions<T>): Signal<T
     subscribe: (callback: () => void) => {
       // When signal changes, call the callback
       const subscriber = (value: T) => {
-        callback();
+        try {
+          callback();
+        } catch (error) {
+          console.error('Error in dependency callback:', error);
+        }
       };
       state.subscribers.add(subscriber);
       // Return unsubscribe function
@@ -91,9 +95,15 @@ export function signal<T>(initialValue: T, options?: SignalOptions<T>): Signal<T
     if (!isEqual) {
       state.value = processedValue;
       
-      // Notify all subscribers
+      // Notify all subscribers with error handling
       const notify = () => {
-        state.subscribers.forEach((callback) => callback(processedValue));
+        state.subscribers.forEach((callback) => {
+          try {
+            callback(processedValue);
+          } catch (error) {
+            console.error('Error in signal subscriber:', error);
+          }
+        });
       };
       
       // If batching, schedule the update; otherwise notify immediately

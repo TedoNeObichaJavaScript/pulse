@@ -392,6 +392,27 @@ export {
   type BatchStrategy,
 } from './batching-advanced';
 
+// Optimizations
+export {
+  optimizeSignalUpdates,
+  memoizeSignalGetter,
+  detectCircularDependency,
+} from './optimizations';
+
+// Type Safety
+export {
+  typedSignal,
+  brandedSignal,
+  unionSignal,
+} from './type-safety';
+
+// Edge Cases
+export {
+  safeEffect,
+  safeNumberSignal,
+  nonNullableSignal,
+} from './edge-cases';
+
 // Dependency tracking
 export { getCurrentContext, setCurrentContext } from './context';
 

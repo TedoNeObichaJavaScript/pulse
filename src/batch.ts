@@ -14,13 +14,20 @@ function flushUpdates(): void {
     return;
   }
 
-  // Copy queue and clear it
+  // Copy queue and clear it to prevent re-entrancy
   const updates = updateQueue.slice();
   updateQueue.length = 0;
   scheduledFlush = false;
 
-  // Execute all updates
-  updates.forEach((update) => update());
+  // Execute all updates with error handling
+  for (const update of updates) {
+    try {
+      update();
+    } catch (error) {
+      console.error('Error in batched update:', error);
+      // Continue with other updates
+    }
+  }
 }
 
 /**

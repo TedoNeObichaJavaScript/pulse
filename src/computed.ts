@@ -58,14 +58,18 @@ export function computed<T>(fn: () => T): Computed<T> {
     };
 
     // Compute the value while tracking dependencies, with error handling
-    const computedValue = withErrorHandling(
-      () => withContext(context, fn),
-      'computed'
-    );
-    if (computedValue === undefined) {
-      throw new Error('Computed function returned undefined or threw an error');
+    try {
+      const computedValue = withContext(context, fn);
+      state.value = computedValue;
+    } catch (error) {
+      // Error handling is done by withErrorHandling wrapper
+      // If we get here, re-throw or use last known value
+      if (state.value === undefined) {
+        throw error;
+      }
+      // Return last known value on error
+      return state.value;
     }
-    state.value = computedValue;
 
     // Subscribe to all dependencies
     const unsubscribers: (() => void)[] = [];
