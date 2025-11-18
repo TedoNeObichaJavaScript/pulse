@@ -309,6 +309,15 @@ export {
   type SignalProvider,
 } from './providers';
 
+// Enhanced Effects
+export {
+  enhancedEffect,
+  conditionalEffect,
+  debouncedEffect,
+  throttledEffect,
+  type EffectOptions,
+} from './effects-enhanced';
+
 // Dependency tracking
 export { getCurrentContext, setCurrentContext } from './context';
 
