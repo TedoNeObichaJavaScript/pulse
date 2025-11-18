@@ -515,6 +515,16 @@ export {
   type WorkerSignalOptions,
 } from './workers';
 
+// DevTools
+export {
+  enableDevTools,
+  registerSignalDevTools,
+  devToolsSignal,
+  logSignalUpdates,
+  profileSignal,
+  type DevToolsOptions,
+} from './devtools';
+
 // Dependency tracking
 export { getCurrentContext, setCurrentContext } from './context';
 
