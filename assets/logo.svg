@@ -1,85 +1,91 @@
 <svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <!-- Glow effect for the pulse line -->
+    <!-- Gradient for modern look -->
+    <linearGradient id="pulseGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#6366f1;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Glow effect -->
     <filter id="glow">
-      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
       <feMerge>
         <feMergeNode in="coloredBlur"/>
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter>
     
-    <!-- Gradient for pulse line -->
-    <linearGradient id="pulseGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" style="stop-color:#00ff88;stop-opacity:1" />
-      <stop offset="50%" style="stop-color:#00d4ff;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#ff006e;stop-opacity:1" />
-    </linearGradient>
+    <!-- Pulse animation -->
+    <animateTransform
+      id="pulseAnimation"
+      attributeName="transform"
+      type="scale"
+      values="1;1.1;1"
+      dur="2s"
+      repeatCount="indefinite"
+    />
   </defs>
   
-  <!-- Black background -->
-  <rect width="200" height="200" fill="#000000"/>
+  <!-- Background circle with gradient -->
+  <circle cx="100" cy="100" r="85" fill="url(#pulseGradient)" opacity="0.15" filter="url(#glow)"/>
   
-  <!-- Grid lines (subtle) -->
-  <g opacity="0.1" stroke="#ffffff" stroke-width="0.5">
-    <line x1="0" y1="50" x2="200" y2="50"/>
-    <line x1="0" y1="100" x2="200" y2="100"/>
-    <line x1="0" y1="150" x2="200" y2="150"/>
-    <line x1="50" y1="0" x2="50" y2="200"/>
-    <line x1="100" y1="0" x2="100" y2="200"/>
-    <line x1="150" y1="0" x2="150" y2="200"/>
+  <!-- Main pulse circle -->
+  <circle cx="100" cy="100" r="70" fill="url(#pulseGradient)" filter="url(#glow)">
+    <animate attributeName="r" values="70;75;70" dur="2s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="1;0.8;1" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- Inner circle -->
+  <circle cx="100" cy="100" r="50" fill="#ffffff" opacity="0.95"/>
+  
+  <!-- Pulse waves - modern design -->
+  <g opacity="0.9">
+    <!-- Top wave -->
+    <path d="M 50 100 Q 75 60, 100 100 T 150 100" 
+          stroke="#ffffff" 
+          stroke-width="4" 
+          fill="none" 
+          stroke-linecap="round"
+          filter="url(#glow)">
+      <animate attributeName="d" 
+               values="M 50 100 Q 75 60, 100 100 T 150 100;M 50 100 Q 75 80, 100 100 T 150 100;M 50 100 Q 75 60, 100 100 T 150 100" 
+               dur="1.5s" 
+               repeatCount="indefinite"/>
+    </path>
+    
+    <!-- Bottom wave -->
+    <path d="M 50 100 Q 75 140, 100 100 T 150 100" 
+          stroke="#ffffff" 
+          stroke-width="4" 
+          fill="none" 
+          stroke-linecap="round"
+          filter="url(#glow)">
+      <animate attributeName="d" 
+               values="M 50 100 Q 75 140, 100 100 T 150 100;M 50 100 Q 75 120, 100 100 T 150 100;M 50 100 Q 75 140, 100 100 T 150 100" 
+               dur="1.5s" 
+               begin="0.3s"
+               repeatCount="indefinite"/>
+    </path>
+    
+    <!-- Center line -->
+    <line x1="50" y1="100" x2="150" y2="100" 
+          stroke="#ffffff" 
+          stroke-width="3" 
+          stroke-linecap="round"
+          opacity="0.7"/>
   </g>
   
-  <!-- Main EKG pulse line -->
-  <path 
-    d="M 20 100 L 30 100 L 35 60 L 45 140 L 55 100 L 65 100 L 70 80 L 80 120 L 90 100 L 100 100 L 105 70 L 115 130 L 125 100 L 135 100 L 140 90 L 150 110 L 160 100 L 170 100 L 175 50 L 180 150 L 185 100" 
-    stroke="url(#pulseGradient)" 
-    stroke-width="3" 
-    fill="none" 
-    stroke-linecap="round" 
-    stroke-linejoin="round"
-    filter="url(#glow)"
-  >
-    <!-- Animate the pulse -->
-    <animate 
-      attributeName="d" 
-      values="M 20 100 L 30 100 L 35 60 L 45 140 L 55 100 L 65 100 L 70 80 L 80 120 L 90 100 L 100 100 L 105 70 L 115 130 L 125 100 L 135 100 L 140 90 L 150 110 L 160 100 L 170 100 L 175 50 L 180 150 L 185 100;
-              M 20 100 L 30 100 L 35 65 L 45 135 L 55 100 L 65 100 L 70 85 L 80 115 L 90 100 L 100 100 L 105 75 L 115 125 L 125 100 L 135 100 L 140 95 L 150 105 L 160 100 L 170 100 L 175 55 L 180 145 L 185 100;
-              M 20 100 L 30 100 L 35 60 L 45 140 L 55 100 L 65 100 L 70 80 L 80 120 L 90 100 L 100 100 L 105 70 L 115 130 L 125 100 L 135 100 L 140 90 L 150 110 L 160 100 L 170 100 L 175 50 L 180 150 L 185 100" 
-      dur="1.5s" 
-      repeatCount="indefinite"
-    />
-  </path>
+  <!-- Center dot with pulse -->
+  <circle cx="100" cy="100" r="8" fill="#ffffff" filter="url(#glow)">
+    <animate attributeName="r" values="8;12;8" dur="1.5s" repeatCount="indefinite"/>
+  </circle>
   
-  <!-- Secondary pulse line (subtle) -->
-  <path 
-    d="M 25 100 L 40 100 L 50 85 L 60 115 L 70 100 L 85 100 L 95 75 L 110 125 L 120 100 L 140 100 L 155 95 L 165 105 L 175 100" 
-    stroke="#00ff88" 
-    stroke-width="1.5" 
-    fill="none" 
-    stroke-linecap="round"
-    opacity="0.4"
-  >
-    <animate 
-      attributeName="opacity" 
-      values="0.4;0.2;0.4" 
-      dur="1.5s" 
-      repeatCount="indefinite"
-    />
-  </path>
-  
-  <!-- Heart icon at the end (subtle) -->
-  <path 
-    d="M 185 100 L 188 97 L 190 95 L 192 97 L 195 100 L 195 105 L 192 110 L 190 112 L 188 110 L 185 105 Z" 
-    fill="#ff006e" 
-    opacity="0.8"
-    filter="url(#glow)"
-  >
-    <animate 
-      attributeName="opacity" 
-      values="0.8;1;0.8" 
-      dur="1.5s" 
-      repeatCount="indefinite"
-    />
-  </path>
+  <!-- Small accent dots -->
+  <circle cx="70" cy="100" r="3" fill="#ffffff" opacity="0.6">
+    <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="130" cy="100" r="3" fill="#ffffff" opacity="0.6">
+    <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" begin="0.5s" repeatCount="indefinite"/>
+  </circle>
 </svg>
