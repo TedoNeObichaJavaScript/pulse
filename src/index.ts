@@ -29,6 +29,9 @@ export {
   PulseError,
 } from './error-handling';
 
+// Template compiler
+export { compile, type CompiledTemplate, type CompileOptions } from './compiler/index';
+
 // Dependency tracking
 export { getCurrentContext, setCurrentContext } from './context';
 
