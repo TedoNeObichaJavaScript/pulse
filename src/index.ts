@@ -553,6 +553,56 @@ export {
   lazyFeature,
 } from './tree-shaking';
 
+// Composition
+export {
+  composeSignals,
+  combineSignals,
+  deriveSignal,
+  switchSignal,
+  mergeSignalsWith,
+  pickSignal,
+  omitSignal,
+  mapSignal,
+  filterSignal,
+  reduceSignal,
+} from './composition';
+
+// Type Utilities
+export {
+  isSignal,
+  isComputed,
+  createTypedSignal,
+  createBrandedSignal,
+  type SignalValue,
+  type SignalValues,
+  type SignalOf,
+  type Reactive,
+  type OptionalReactive,
+  type DeepReactive,
+  type BrandedSignal,
+} from './type-utilities';
+
+// Testing Helpers
+export {
+  createSignalSpy,
+  waitForSignal,
+  collectSignalValues,
+  createTestSignal,
+  mockSignal,
+  trackSignalReads,
+} from './testing-helpers';
+
+// Advanced Debugging
+export {
+  snapshotSignals,
+  compareSnapshots,
+  traceSignal,
+  visualizeDependencies,
+  debugSignal,
+  inspectSignal,
+  type SignalSnapshot,
+} from './debugging-tools';
+
 // Dependency tracking
 export { getCurrentContext, setCurrentContext } from './context';
 
