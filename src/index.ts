@@ -138,6 +138,29 @@ export {
   type CacheOptions,
 } from './caching';
 
+// Synchronization
+export {
+  syncedSignal,
+  localStorageSyncedSignal,
+  type SyncOptions,
+} from './sync';
+
+// Testing Utilities
+export {
+  waitForSignal,
+  collectSignalValues,
+  mockSignal,
+  expectSignal,
+} from './testing';
+
+// Performance Monitoring
+export {
+  trackPerformance,
+  getPerformanceMetrics,
+  resetPerformanceMetrics,
+  type PerformanceMetrics,
+} from './performance';
+
 // Dependency tracking
 export { getCurrentContext, setCurrentContext } from './context';
 
